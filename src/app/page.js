@@ -31,6 +31,17 @@ Tools: Git, GitHub`;
 const LINKS = `LinkedIn: https://www.linkedin.com/in/hiwarkhedeprasad
 GitHub:   https://github.com/HiwarkhedePrasad`;
 
+const ROASTS = [
+  "Nice try, genius. You think this is your production server? 😂",
+  "rm -rf? Really? Did you learn Linux from a meme page? 🤡",
+  "BREAKING: Local developer tries to nuke portfolio site. Fails miserably.",
+  "Congratulations! You've won the 'Worst Hacker Attempt' award! 🏆",
+  "I've seen smarter commands from my grandmother. And she uses Internet Explorer.",
+  "Did you really think that would work? This isn't your Arch Linux setup, buddy.",
+  "Error 403: Your l33t h4ck3r skills are forbidden here. Try sudo make-me-a-sandwich instead.",
+  "Fun fact: 73% of people who try rm -rf on portfolios still live with their parents. 📊"
+];
+
 export default function Home() {
   const [lines, setLines] = useState([
     `Welcome to ${USER}@${HOST}! Type 'help' to get started.`,
@@ -38,7 +49,9 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([]);
   const [historyIndex, setHistoryIndex] = useState(null);
+  const [chatMode, setChatMode] = useState(false);
   const bottomRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -49,11 +62,66 @@ export default function Home() {
     const cmd = raw.toLowerCase();
     if (!cmd) return;
 
+    // Check for rm -rf attempts
+    if (cmd.match(/rm\s+(-rf|-fr|-r\s+-f|-f\s+-r|--recursive\s+--force)/i)) {
+      const roast = ROASTS[Math.floor(Math.random() * ROASTS.length)];
+      appendOutput(`
+╔════════════════════════════════════════════════════╗
+║  🚨 SECURITY ALERT: DESTRUCTION ATTEMPT DETECTED  🚨  ║
+╚════════════════════════════════════════════════════╝
+
+${roast}
+
+P.S. This terminal is sandboxed. But your dignity isn't. 💀
+`);
+      return;
+    }
+
     const isSudo = cmd.startsWith("sudo ");
     const base = isSudo ? cmd.replace(/^sudo\s+/, "") : cmd;
     const parts = base.split(/\s+/).filter(Boolean);
     const commandName = parts[0] || "";
     const arg1 = parts[1] || "";
+
+    // Secret chatbot command
+    if (commandName === "jarvis" || commandName === "chat") {
+      if (!chatMode) {
+        setChatMode(true);
+        appendOutput(`
+🤖 AI Chat Mode Activated!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+You can now chat with Gemini AI.
+Type 'exit' or 'quit' to return to terminal.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+`);
+      }
+      return;
+    }
+
+    // Handle chat mode
+    if (chatMode) {
+      if (cmd === "exit" || cmd === "quit") {
+        setChatMode(false);
+        appendOutput("🤖 AI Chat Mode Deactivated. Back to terminal.");
+        return;
+      }
+      
+      appendOutput("🤖 Thinking...");
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: raw }),
+        });
+        
+        if (!res.ok) throw new Error("AI request failed");
+        const data = await res.json();
+        appendOutput(`🤖 ${data.response || "Sorry, I couldn't process that."}`);
+      } catch (e) {
+        appendOutput("🤖 Error: Unable to connect to AI. Check your API configuration.");
+      }
+      return;
+    }
 
     switch (commandName) {
       case "help":
@@ -102,9 +170,12 @@ export default function Home() {
   }
 
   function handleSubmit(e) {
-    e.preventDefault();
+    e?.preventDefault();
     const current = input;
-    setLines((prev) => [...prev, `${USER}@${HOST}:~$ ${current}`]);
+    if (!current.trim()) return;
+    
+    const prefix = chatMode ? "💬" : `${USER}@${HOST}:~$`;
+    setLines((prev) => [...prev, `${prefix} ${current}`]);
     setInput("");
     setHistory((prev) => [...prev, current]);
     setHistoryIndex(null);
@@ -112,6 +183,11 @@ export default function Home() {
   }
 
   function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      handleSubmit();
+      return;
+    }
+    
     if (e.key === "ArrowUp") {
       e.preventDefault();
       if (!history.length) return;
@@ -138,33 +214,38 @@ export default function Home() {
     }
   }
 
+  const promptSymbol = chatMode ? "💬" : `${USER}@${HOST}:~$`;
+
   return (
-    <div className="terminal-container">
-      <div className="terminal-window">
-        <div className="terminal-header">
-          <span className="dot red" />
-          <span className="dot yellow" />
-          <span className="dot green" />
-          <span className="title">{USER}@{HOST}</span>
+    <div className="min-h-screen bg-black text-green-400 font-mono p-4">
+      <div className="max-w-4xl mx-auto bg-gray-900 rounded-lg shadow-2xl overflow-hidden">
+        <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-red-500"></div>
+          <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+          <div className="w-3 h-3 rounded-full bg-green-500"></div>
+          <span className="ml-2 text-gray-300 text-sm">
+            {USER}@{HOST} {chatMode && "- 🤖 AI CHAT MODE"}
+          </span>
         </div>
-        <div className="terminal-body">
+        <div className="p-4 h-96 overflow-y-auto">
           {lines.map((line, idx) => (
-            <pre key={idx} className="line">{line}</pre>
+            <pre key={idx} className="whitespace-pre-wrap mb-1">{line}</pre>
           ))}
           <div ref={bottomRef} />
         </div>
-        <form onSubmit={handleSubmit} className="terminal-input">
-          <span className="prompt">{USER}@{HOST}:~$</span>
+        <div className="bg-gray-800 px-4 py-2 flex items-center gap-2">
+          <span className="text-green-400">{promptSymbol}</span>
           <input
+            ref={inputRef}
             aria-label="terminal-input"
             autoFocus
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="input"
+            className="flex-1 bg-transparent outline-none text-green-400"
             spellCheck={false}
           />
-        </form>
+        </div>
       </div>
     </div>
   );
