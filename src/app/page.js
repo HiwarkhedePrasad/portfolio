@@ -354,7 +354,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-black p-4 flex items-center justify-center">
+    <div className="min-h-screen bg-black p-2 sm:p-4 md:p-6 flex items-center justify-center">
       <style>{`
         @keyframes blink {
           0%, 49% { opacity: 1; }
@@ -369,40 +369,42 @@ export default function Home() {
       
       <div className="w-full max-w-4xl">
         <div 
-          className="bg-gray-400 border-4 border-gray-300 shadow-2xl"
+          className="bg-gray-400 border-2 sm:border-4 border-gray-300 shadow-2xl"
           style={{
-            boxShadow: '8px 8px 0px rgba(0,0,0,0.5), inset 2px 2px 0px rgba(255,255,255,0.5), inset -2px -2px 0px rgba(0,0,0,0.3)'
+            boxShadow: '4px 4px 0px rgba(0,0,0,0.5), inset 2px 2px 0px rgba(255,255,255,0.5), inset -2px -2px 0px rgba(0,0,0,0.3)'
           }}
         >
+          {/* Title Bar */}
           <div 
-            className="bg-gradient-to-r from-blue-800 to-blue-600 px-2 py-1 flex items-center justify-between border-b-2 border-gray-900"
+            className="bg-gradient-to-r from-blue-800 to-blue-600 px-1 sm:px-2 py-1 flex items-center justify-between border-b-2 border-gray-900"
             style={{
               background: 'linear-gradient(to right, #000080, #0000CD)',
             }}
           >
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-gray-300 border border-gray-600 flex items-center justify-center text-xs">
+            <div className="flex items-center gap-1 sm:gap-2 overflow-hidden">
+              <div className="w-3 h-3 sm:w-4 sm:h-4 bg-gray-300 border border-gray-600 flex items-center justify-center text-xs flex-shrink-0">
                 📁
               </div>
-              <span className="text-white font-bold text-sm tracking-wider">
+              <span className="text-white font-bold text-xs sm:text-sm tracking-wider truncate">
                 C:\WINDOWS\TERMINAL.EXE - [{USER}@{HOST}]
               </span>
             </div>
-            <div className="flex gap-1">
-              <button className="w-5 h-5 bg-gray-300 border border-gray-600 flex items-center justify-center text-xs font-bold hover:bg-gray-400">
+            <div className="flex gap-1 flex-shrink-0">
+              <button className="w-4 h-4 sm:w-5 sm:h-5 bg-gray-300 border border-gray-600 flex items-center justify-center text-xs font-bold hover:bg-gray-400">
                 _
               </button>
-              <button className="w-5 h-5 bg-gray-300 border border-gray-600 flex items-center justify-center text-xs font-bold hover:bg-gray-400">
+              <button className="w-4 h-4 sm:w-5 sm:h-5 bg-gray-300 border border-gray-600 flex items-center justify-center text-xs font-bold hover:bg-gray-400">
                 □
               </button>
-              <button className="w-5 h-5 bg-gray-300 border border-gray-600 flex items-center justify-center text-xs font-bold hover:bg-red-500">
+              <button className="w-4 h-4 sm:w-5 sm:h-5 bg-gray-300 border border-gray-600 flex items-center justify-center text-xs font-bold hover:bg-red-500">
                 ✕
               </button>
             </div>
           </div>
 
+          {/* Terminal Content */}
           <div 
-            className="bg-black p-4 h-96 overflow-y-auto font-mono text-sm"
+            className="bg-black p-2 sm:p-4 h-64 sm:h-80 md:h-96 overflow-y-auto font-mono text-xs sm:text-sm"
             style={{
               fontFamily: '"Courier New", Courier, monospace',
               textShadow: '0 0 5px rgba(0, 255, 0, 0.5)',
@@ -410,21 +412,22 @@ export default function Home() {
             }}
           >
             {lines.map((line, idx) => (
-              <pre key={idx} className="whitespace-pre-wrap mb-1 text-green-400">
+              <pre key={idx} className="whitespace-pre-wrap mb-1 text-green-400 break-all">
                 {renderLine(line)}
               </pre>
             ))}
             <div ref={bottomRef} />
           </div>
 
-          <div className="bg-black px-4 py-2 flex items-center gap-2 border-t-2 border-gray-700">
-            <span className="text-green-400 font-bold">{`${USER}@${HOST}:${currentPath}$`}</span>
+          {/* Input Bar */}
+          <div className="bg-black px-2 sm:px-4 py-2 flex items-start sm:items-center gap-1 sm:gap-2 border-t-2 border-gray-700 flex-col sm:flex-row">
+            <span className="text-green-400 font-bold text-xs sm:text-sm break-all">{`${USER}@${HOST}:${currentPath}$`}</span>
             <input
               ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent outline-none text-green-400 font-mono cursor-blink"
+              className="flex-1 w-full bg-transparent outline-none text-green-400 font-mono cursor-blink text-xs sm:text-sm"
               style={{
                 fontFamily: '"Courier New", Courier, monospace',
                 textShadow: '0 0 5px rgba(0, 255, 0, 0.5)'
@@ -434,18 +437,20 @@ export default function Home() {
             />
           </div>
 
+          {/* Status Bar */}
           <div 
-            className="bg-gray-300 px-2 py-1 text-xs flex items-center justify-between border-t-2 border-gray-400"
+            className="bg-gray-300 px-1 sm:px-2 py-1 text-xs flex items-center justify-between border-t-2 border-gray-400"
             style={{
               boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3)'
             }}
           >
-            <div className="flex gap-4">
-              <span>Lines: {lines.length}</span>
-              <span>|</span>
+            <div className="flex gap-2 sm:gap-4 text-xs">
+              <span className="hidden sm:inline">Lines: {lines.length}</span>
+              <span className="sm:hidden">L: {lines.length}</span>
+              <span className="hidden sm:inline">|</span>
               <span>Ready</span>
             </div>
-            <div>
+            <div className="hidden sm:block">
               <span>MS-DOS Prompt</span>
             </div>
           </div>
