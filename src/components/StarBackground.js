@@ -4,7 +4,6 @@ import React, { useEffect, useRef } from 'react';
 const StarBackground = () => {
   const canvasRef = useRef(null);
 
-
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -15,7 +14,11 @@ const StarBackground = () => {
 
     // --- Star & Animation Constants ---
     const stars = [];
-    const numStars = 150;
+    
+    // UPDATED: Check screen width to determine star count
+    const isSmallScreen = window.innerWidth < 768;
+    const numStars = isSmallScreen ? 50 : 150; 
+
     const mouse = { x: null, y: null };
     
     // Pre-calculate squared distances
@@ -99,8 +102,6 @@ const StarBackground = () => {
     const grid = new SpatialHashGrid(connectionDistance);
 
     // --- Event Handlers ---
-
-
     const handleWindowMouseMove = (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
@@ -113,8 +114,6 @@ const StarBackground = () => {
 
     window.addEventListener('mousemove', handleWindowMouseMove, { passive: true });
     window.addEventListener('mouseleave', handleWindowMouseLeave, { passive: true });
-
-
 
     // --- Animation Loop ---
     const animate = () => {
@@ -184,7 +183,6 @@ const StarBackground = () => {
       window.removeEventListener('mousemove', handleWindowMouseMove);
       window.removeEventListener('mouseleave', handleWindowMouseLeave);
       window.removeEventListener('resize', handleResize);
-      
     };
   }, []);
 
