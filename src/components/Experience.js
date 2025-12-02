@@ -4,22 +4,22 @@ import React from 'react';
 const Experience = () => {
   const experience = [
     {
-      role: "Senior Full Stack Developer",
-      company: "TechFlow Solutions",
-      period: "2021 - Present",
-      description: "Leading a team of 5 developers building scalable cloud-native applications. Improved system performance by 40% through microservices migration."
+      role: "Full-stack Developer",
+      company: "Freelance",
+      period: "Oct 2023 - Present",
+      description: "Working as a Freelance Full-stack Developer on various remote projects. Specializing in building scalable web applications."
     },
     {
-      role: "Full Stack Developer",
-      company: "Creative Digital Agency",
-      period: "2019 - 2021",
-      description: "Developed and maintained 15+ client websites. Implemented CI/CD pipelines that reduced deployment time by 60%."
+      role: "Intern",
+      company: "Edunet Foundation",
+      period: "Apr 2025 - Aug 2025",
+      description: "Microsoft AI National Skilling Initiative Internship. Gained hands-on experience in AI and cloud technologies."
     },
     {
-      role: "Junior Web Developer",
-      company: "StartUp Inc",
-      period: "2018 - 2019",
-      description: "Collaborated with UI/UX designers to implement responsive frontend interfaces using React and SCSS."
+      role: "Summer Intern",
+      company: "Microspectra Software Technologies",
+      period: "Jun 2023 - Jul 2023",
+      description: "Worked on web development projects using JavaScript and APIs. Gained practical experience in software development lifecycle."
     }
   ];
 
