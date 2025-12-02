@@ -28,7 +28,7 @@ const Navbar = ({ activeSection, scrollToSection }) => {
     <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-black/80 backdrop-blur-md shadow-lg border-b border-zinc-800' : 'bg-transparent'}`}>
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         <div className="text-2xl font-bold text-orange-500 cursor-pointer invert-hover" onClick={() => handleScrollTo('home')}>
-          DEV.PORTFOLIO
+         Prasad Hiwarkhede
         </div>
 
         {/* Desktop Nav */}
