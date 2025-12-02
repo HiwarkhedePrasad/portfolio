@@ -3,6 +3,7 @@ import "./globals.css";
 import { TransitionProvider } from "../context/TransitionContext";
 import Transition from "../components/Transition";
 import WaterDropletCursor from "../components/WaterDropletCursor";
+import Disclaimer from "../components/Disclaimer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
         <TransitionProvider>
           <Transition />
           <WaterDropletCursor />
+          <Disclaimer />
           {children}
         </TransitionProvider>
       </body>
