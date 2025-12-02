@@ -48,9 +48,9 @@ const Hero = ({ scrollToSection }) => {
         </div>
         
         <div className="mt-16 flex justify-center gap-6 text-slate-400">
-          <a href="#" className="hover:text-white transition-colors invert-hover"><Github size={24} /></a>
-          <a href="#" className="hover:text-white transition-colors invert-hover"><Linkedin size={24} /></a>
-          <a href="#" className="hover:text-white transition-colors invert-hover"><Mail size={24} /></a>
+          <a href="https://www.github.com/HiwarkhedePrasad" className="hover:text-white transition-colors invert-hover"><Github size={24} /></a>
+          <a href="https://www.linkedin.com/in/HiwarkhedePrasad/" className="hover:text-white transition-colors invert-hover"><Linkedin size={24} /></a>
+          <a href="mailto:phiwarkhede05@gmail.com" className="hover:text-white transition-colors invert-hover"><Mail size={24} /></a>
         </div>
       </div>
     </section>
