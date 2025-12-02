@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { TransitionProvider } from "../context/TransitionContext";
 import Transition from "../components/Transition";
+import WaterDropletCursor from "../components/WaterDropletCursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <TransitionProvider>
           <Transition />
+          <WaterDropletCursor />
           {children}
         </TransitionProvider>
       </body>

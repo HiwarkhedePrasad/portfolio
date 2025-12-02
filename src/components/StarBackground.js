@@ -3,13 +3,11 @@ import React, { useEffect, useRef } from 'react';
 
 const StarBackground = () => {
   const canvasRef = useRef(null);
-  const cursorRef = useRef(null);
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const cursor = cursorRef.current;
-    
-    if (!canvas || !cursor) return;
+    if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
@@ -101,33 +99,22 @@ const StarBackground = () => {
     const grid = new SpatialHashGrid(connectionDistance);
 
     // --- Event Handlers ---
-    const showCursor = () => { cursor.style.opacity = '1'; };
-    const hideCursor = () => { cursor.style.opacity = '0'; };
+
 
     const handleWindowMouseMove = (e) => {
       mouse.x = e.clientX;
       mouse.y = e.clientY;
-      cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0) translate3d(-50%, -50%, 0)`;
     };
-    
+
     const handleWindowMouseLeave = () => {
       mouse.x = null;
       mouse.y = null;
-      hideCursor();
     };
 
     window.addEventListener('mousemove', handleWindowMouseMove, { passive: true });
     window.addEventListener('mouseleave', handleWindowMouseLeave, { passive: true });
 
-    // Attach listeners to interactive elements
-    // We use a timeout to ensure elements are rendered
-    setTimeout(() => {
-      const textElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, label, li, input, textarea');
-      textElements.forEach((el) => {
-        el.addEventListener('mouseenter', showCursor, { passive: true });
-        el.addEventListener('mouseleave', hideCursor, { passive: true });
-      });
-    }, 100);
+
 
     // --- Animation Loop ---
     const animate = () => {
@@ -198,53 +185,12 @@ const StarBackground = () => {
       window.removeEventListener('mouseleave', handleWindowMouseLeave);
       window.removeEventListener('resize', handleResize);
       
-      const textElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, a, button, label, li, input, textarea');
-      textElements.forEach((el) => {
-        el.removeEventListener('mouseenter', showCursor);
-        el.removeEventListener('mouseleave', hideCursor);
-      });
     };
   }, []);
 
   return (
     <>
       <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />
-      <div ref={cursorRef} className="custom-cursor" />
-      <style dangerouslySetInnerHTML={{__html: `
-        .invert-hover:hover {
-          cursor: none;
-        }
-
-        .custom-cursor {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 80px; 
-          height: 80px;
-          background-color: white; 
-          border-radius: 50%;
-          pointer-events: none; 
-          z-index: 9999; 
-          mix-blend-mode: difference; 
-          opacity: 0; 
-          transform: translate3d(0, 0, 0) translate3d(-50%, -50%, 0);
-          transition: opacity 0.3s ease-out, width 0.3s ease-out, height 0.3s ease-out;
-          will-change: transform, border-radius;
-          animation: morph 4s ease-in-out infinite;
-        }
-
-        @keyframes morph {
-          0% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-          }
-          50% {
-            border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-          }
-          100% {
-            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-          }
-        }
-      `}} />
     </>
   );
 };
