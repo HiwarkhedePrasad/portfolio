@@ -7,19 +7,17 @@ gsap.registerPlugin(useGSAP);
 
 const Preloader = () => {
   const [isSiteLoaded, setIsSiteLoaded] = useState(false);
-  const siteLoadedRef = useRef(false); // Ref for GSAP to access current value immediately
-  
+  const siteLoadedRef = useRef(false);
   const containerRef = useRef(null);
   const whiteBallRef = useRef(null);
   const blackBallRef = useRef(null);
 
   // 1. Detect Website Load
   useEffect(() => {
-    document.body.style.overflow = "hidden"; // Lock scroll
-
+    document.body.style.overflow = "hidden";
     const handleLoad = () => {
       setIsSiteLoaded(true);
-      siteLoadedRef.current = true; // Update ref for GSAP
+      siteLoadedRef.current = true;
     };
 
     if (document.readyState === "complete") {
@@ -27,7 +25,6 @@ const Preloader = () => {
     } else {
       window.addEventListener("load", handleLoad);
     }
-
     return () => window.removeEventListener("load", handleLoad);
   }, []);
 
@@ -35,105 +32,82 @@ const Preloader = () => {
   useGSAP(() => {
     const tl = gsap.timeline();
 
-    // Initial States
+    // --- Initial Setup ---
+    gsap.set(containerRef.current, { backgroundColor: "#000" });
     gsap.set(whiteBallRef.current, { y: -150, scale: 1, autoAlpha: 1 });
     gsap.set(blackBallRef.current, { y: -150, scale: 1, autoAlpha: 0 });
-    gsap.set(containerRef.current, { backgroundColor: "#000000" });
 
-    // --- PHASE 1: White Ball (Intro) ---
-    tl.to(whiteBallRef.current, {
-      y: 0,
-      duration: 0.5,
-      ease: "power2.in",
-    })
-    .to(whiteBallRef.current, {
-      y: -100,
-      duration: 0.4,
-      ease: "power2.out",
-    })
-    .to(whiteBallRef.current, {
-      y: 0,
-      duration: 0.4,
-      ease: "power2.in",
-    })
-    // Expand White Ball
-    .to(whiteBallRef.current, {
-      scale: 100, // Massive scale to cover screen
-      duration: 0.8,
-      ease: "expo.inOut",
-      onComplete: () => {
-        // SWAP BACKGROUNDS HIDDENLY
-        // Now that white ball covers screen, make container white
-        gsap.set(containerRef.current, { backgroundColor: "#ffffff" });
-        // Hide white ball (user won't see because container is white)
-        gsap.set(whiteBallRef.current, { autoAlpha: 0 });
-        // Prepare Black ball
-        gsap.set(blackBallRef.current, { autoAlpha: 1 });
-      }
-    });
+    // === START OF THE LOOP ===
+    tl.addLabel("startLoop");
 
-    // --- PHASE 2: Black Ball (The Loop) ---
-    tl.addLabel("startBlackLoop"); // Mark the start of the loop
+    // ---------------------------
+    // PHASE 1: WHITE BALL (On Black BG)
+    // ---------------------------
+    tl.to(whiteBallRef.current, { y: 0, duration: 0.5, ease: "power2.in" })
+      .to(whiteBallRef.current, { y: -100, duration: 0.4, ease: "power2.out" })
+      .to(whiteBallRef.current, { y: 0, duration: 0.4, ease: "power2.in" })
+      // Expand White to cover screen
+      .to(whiteBallRef.current, {
+        scale: 100,
+        duration: 0.8,
+        ease: "expo.inOut",
+        onComplete: () => {
+          // 1. Screen is now visually WHITE (ball covered it).
+          // 2. We swap the container BG to WHITE behind the scenes.
+          gsap.set(containerRef.current, { backgroundColor: "#fff" });
+          
+          // 3. Hide White ball (redundant now) and Reset Black ball for next phase
+          gsap.set(whiteBallRef.current, { autoAlpha: 0 });
+          gsap.set(blackBallRef.current, { autoAlpha: 1, y: -150, scale: 1 });
+        },
+      });
 
-    // 1. Black Ball Reset (Instant snap back to top for looping)
-    tl.set(blackBallRef.current, { y: -150, scale: 1 })
-      
-      // 2. Black Ball Bounce
-      .to(blackBallRef.current, {
-        y: 0,
-        duration: 0.5,
-        ease: "power2.in",
-      })
-      .to(blackBallRef.current, {
-        y: -100,
-        duration: 0.4,
-        ease: "power2.out",
-      })
-      .to(blackBallRef.current, {
-        y: 0,
-        duration: 0.4,
-        ease: "power2.in",
-      })
-      
-      // 3. Black Ball Expand
+    // ---------------------------
+    // PHASE 2: BLACK BALL (On White BG)
+    // ---------------------------
+    tl.to(blackBallRef.current, { y: 0, duration: 0.5, ease: "power2.in" })
+      .to(blackBallRef.current, { y: -100, duration: 0.4, ease: "power2.out" })
+      .to(blackBallRef.current, { y: 0, duration: 0.4, ease: "power2.in" })
+      // Expand Black to cover screen
       .to(blackBallRef.current, {
         scale: 100,
         duration: 0.8,
         ease: "expo.inOut",
-      })
-
-      // 4. CHECKPOINT: Are we loaded?
-      .call(() => {
-        if (!siteLoadedRef.current) {
-          // If NOT loaded, jump back to start of black loop
-          // We fade out the "expanded" black ball slightly to allow the "reset" small ball to be seen clearly
-          // Or we just snap back. Snapping back creates a seamless loop.
-          tl.play("startBlackLoop");
-        } else {
-          // If LOADED, we are currently looking at a black screen (expanded black ball).
-          // We can now allow the component to fade out.
-          finishAnimation();
-        }
+        onComplete: () => {
+          // 1. Screen is now visually BLACK.
+          // 2. Swap container BG back to BLACK.
+          gsap.set(containerRef.current, { backgroundColor: "#000" });
+          
+          // 3. Hide Black ball and Reset White ball for the loop restart
+          gsap.set(blackBallRef.current, { autoAlpha: 0 });
+          gsap.set(whiteBallRef.current, { autoAlpha: 1, y: -150, scale: 1 });
+        },
       });
+
+    // ---------------------------
+    // LOOP LOGIC
+    // ---------------------------
+    tl.call(() => {
+      // If site is NOT loaded, go back to the very start (White Ball)
+      if (!siteLoadedRef.current) {
+        tl.play("startLoop");
+      } else {
+        finishAnimation();
+      }
+    });
 
   }, { scope: containerRef });
 
-  // Function to handle the actual removal of the preloader
   const finishAnimation = () => {
-    // Fade out the entire container
     gsap.to(containerRef.current, {
       opacity: 0,
       duration: 0.5,
-      delay: 0.2,
       onComplete: () => {
-        // Unlock scroll and remove component
         document.body.style.overflow = "";
-        // You might set a state here to unmount the component entirely if you prefer
-        // But opacity: 0 pointer-events-none is usually enough and smoother.
         if (containerRef.current) {
-            containerRef.current.style.display = "none";
+          containerRef.current.style.display = "none";
         }
-      }
+      },
     });
   };
 
@@ -142,17 +116,8 @@ const Preloader = () => {
       ref={containerRef}
       className="fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden"
     >
-      {/* White Ball */}
-      <div
-        ref={whiteBallRef}
-        className="absolute w-12 h-12 bg-white rounded-full"
-      ></div>
-
-      {/* Black Ball */}
-      <div
-        ref={blackBallRef}
-        className="absolute w-12 h-12 bg-black rounded-full"
-      ></div>
+      <div ref={whiteBallRef} className="absolute w-12 h-12 bg-white rounded-full" />
+      <div ref={blackBallRef} className="absolute w-12 h-12 bg-black rounded-full" />
     </div>
   );
 };
