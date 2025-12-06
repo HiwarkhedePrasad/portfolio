@@ -4,27 +4,27 @@ import React from 'react';
 const Experience = () => {
   const experience = [
     {
-      role: "Full-stack Developer",
-      company: "Freelance",
-      period: "Oct 2023 - Present",
-      description: "Working as a Freelance Full-stack Developer on various remote projects. Specializing in building scalable web applications."
+      role: "Full-Stack Freelance Developer",
+      company: "Remote",
+      period: "2022 - Present",
+      description: "Building web and mobile applications using the MERN stack (MongoDB, Express, React, Node.js) and React Native. Delivering scalable solutions for diverse client needs."
     },
     {
       role: "Intern",
       company: "Edunet Foundation",
       period: "Apr 2025 - Aug 2025",
-      description: "Microsoft AI National Skilling Initiative Internship. Gained hands-on experience in AI and cloud technologies."
+      description: "Microsoft AI National Skilling Initiative Internship. Gained hands-on experience in AI, cloud technologies, and full-stack development practices."
     },
     {
       role: "Summer Intern",
       company: "Microspectra Software Technologies",
       period: "Jun 2023 - Jul 2023",
-      description: "Worked on web development projects using JavaScript and APIs. Gained practical experience in software development lifecycle."
+      description: "Worked on web development projects using JavaScript and APIs. Gained practical experience in the software development lifecycle and team collaboration."
     }
   ];
 
   return (
-    <section className="py-20 bg-zinc-900/30">
+    <section id="experience" className="py-20 bg-zinc-900/30">
       <div className="max-w-4xl mx-auto px-6">
         <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">Work Experience</h2>
         

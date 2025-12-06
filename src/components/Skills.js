@@ -99,7 +99,7 @@ const Skills = () => {
         restitution: 0.6, // Slightly bouncier
         friction: 0.001,
         // --- CHANGED: Lower air friction for faster movement (was 0.05) ---
-        frictionAir: 0.01, 
+        frictionAir: 0.04, 
         mass: 1, 
         render: {
            fillStyle: "transparent",
@@ -162,8 +162,8 @@ const Skills = () => {
       bodies.forEach((body, index) => {
         // 1. AMBIENT FLOAT (Faster Drift)
         // Increased multiplier from 0.00005 to 0.0002 for more life
-        const oscX = Math.sin(time * 0.001 + index) * 0.0002; 
-        const oscY = Math.cos(time * 0.001 + index) * 0.0002;
+        const oscX = Math.sin(time * 0.001 + index) * 0.00008; 
+        const oscY = Math.cos(time * 0.001 + index) * 0.00008;
         
         Matter.Body.applyForce(body, body.position, { x: oscX, y: oscY });
 
@@ -172,7 +172,7 @@ const Skills = () => {
         const dy = canvasCenter.y - body.position.y;
         
         // Increased slightly to keep them together since they move faster now
-        const forceStrength = 0.00002; 
+        const forceStrength = 0.000008; 
         Matter.Body.applyForce(body, body.position, {
           x: dx * forceStrength * body.mass,
           y: dy * forceStrength * body.mass
@@ -188,7 +188,7 @@ const Skills = () => {
 
         if (mDist < repelRange) {
           // --- CHANGED: Repel Force increased significantly ---
-          const repelForce = 0.2 * (1 - mDist / repelRange);
+          const repelForce = 0.05 * (1 - mDist / repelRange);
           Matter.Body.applyForce(body, body.position, {
             x: (mDx / mDist) * repelForce * body.mass,
             y: (mDy / mDist) * repelForce * body.mass,
@@ -226,12 +226,22 @@ const Skills = () => {
 
   return (
     <div 
+      id="skills"
       ref={containerRef}
       className="flex h-[80vh] w-full overflow-hidden items-center justify-center relative bg-slate-900/0"
     >
-      <h1 className="absolute z-10 pointer-events-none text-9xl md:text-[20vw] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 font-bold text-slate-700">
-        Skills
-      </h1>
+      <div className="absolute top-0 left-0 w-full h-full z-30 pointer-events-none flex flex-col justify-start pt-20">
+        <div className="max-w-7xl mx-auto px-6 w-full">
+          <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
+            <span className="w-12 h-1 bg-orange-500 rounded-full"></span>
+            My Skills
+          </h2>
+          <p className="text-slate-400 max-w-2xl">
+            A dynamic representation of the technologies I work with. 
+            Move your mouse to interact with the cloud.
+          </p>
+        </div>
+      </div>
       <canvas
         ref={canvasRef}
         className="z-20 w-full h-full block"

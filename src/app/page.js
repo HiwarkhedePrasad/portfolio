@@ -8,6 +8,7 @@ import Skills from '../components/Skills';
 import Projects from '../components/Projects';
 import Experience from '../components/Experience';
 import Education from '../components/Education';
+import Journey from '../components/Journey';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 
@@ -18,7 +19,7 @@ const Portfolio = () => {
   // Handle scroll effects
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'skills', 'projects', 'contact'];
+      const sections = ['home', 'about', 'skills', 'projects', 'experience', 'education', 'journey', 'contact'];
       const current = sections.find(section => {
         const element = document.getElementById(section);
         if (element) {
@@ -70,6 +71,9 @@ const Portfolio = () => {
 
         {/* Education Section */}
         <Education />
+
+        {/* Journey Section */}
+        <Journey />
 
         {/* Contact Section */}
         <Contact />

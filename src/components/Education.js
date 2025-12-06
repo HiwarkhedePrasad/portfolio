@@ -8,7 +8,7 @@ const Education = () => {
       school: "Yeshwantrao Chavan College of Engineering - YCCE",
       degree: "Artificial Intelligence and Data Science",
       period: "Sep 2024 – Jun 2027",
-      description: "Focused on Front-End Development, Node.js, and modern web technologies."
+      description: "Focused on Front-End Development, Node.js, and modern web technologies. Represented YCCE at NASA Space Apps Challenge 2025."
     },
     {
       school: "Government Polytechnic Jalna",

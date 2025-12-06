@@ -4,8 +4,13 @@ import { X, AlertTriangle } from "lucide-react";
 
 export default function Disclaimer() {
   const [isVisible, setIsVisible] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
-  if (!isVisible) return null;
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !isVisible) return null;
 
   return (
     <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-[100] animate-in slide-in-from-bottom-5 fade-in duration-500">

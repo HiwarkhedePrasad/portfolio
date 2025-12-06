@@ -33,7 +33,7 @@ const Navbar = ({ activeSection, scrollToSection }) => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex space-x-8">
-          {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((item) => (
+          {['Home', 'About', 'Skills', 'Projects', 'Experience', 'Education', 'Journey', 'Contact'].map((item) => (
             <button
               key={item}
               onClick={() => handleScrollTo(item.toLowerCase())}
@@ -55,7 +55,7 @@ const Navbar = ({ activeSection, scrollToSection }) => {
       {isMenuOpen && (
         <div className="md:hidden bg-zinc-900 border-t border-zinc-800 absolute w-full">
           <div className="flex flex-col p-4 space-y-4">
-            {['Home', 'About', 'Skills', 'Projects', 'Contact'].map((item) => (
+            {['Home', 'About', 'Skills', 'Projects', 'Experience', 'Education', 'Journey', 'Contact'].map((item) => (
               <button
                 key={item}
                 onClick={() => handleScrollTo(item.toLowerCase())}

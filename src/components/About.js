@@ -28,14 +28,17 @@ const About = () => {
               About Me
             </h2>
             <p className="text-slate-400 mb-6 leading-relaxed">
-              I started my coding journey 5 years ago, and since then, I&apos;ve had the privilege of working at an 
-              <span className="text-orange-400"> advertising agency</span>, a 
-              <span className="text-orange-400"> start-up</span>, and a huge 
-              <span className="text-orange-400"> corporation</span>.
+              I am a full-stack developer and AI practitioner pursuing a B.Tech in Artificial Intelligence and Data Science at <span className="text-orange-400">YCCE, Nagpur</span>. 
+              I have been building web and mobile applications as a freelance developer since 2022, working with the <span className="text-orange-400">MERN stack</span>, React, Django, Flutter, and Firebase. 
+              My interests extend into practical AI—fine-tuning models, integrating <span className="text-orange-400">Ollama-based workflows</span>, and creating applied machine-learning solutions.
+            </p>
+            <p className="text-slate-400 mb-6 leading-relaxed">
+              I have worked on projects spanning encrypted communication, cross-platform app development, and AI-driven systems, and represented YCCE at the <span className="text-orange-400">NASA Space Apps Challenge</span>. 
+              Previously associated with Edunet and Microspectra, I continue to expand my technical range through competitive environments.
             </p>
             <p className="text-slate-400 mb-8 leading-relaxed">
-              My main focus these days is building accessible, inclusive products and digital experiences 
-              for a variety of clients. I enjoy turning complex problems into simple, beautiful and intuitive designs.
+              An active hackathon participant, I have received recognitions at Prototype 2.0, Infotsav (IIIT Gwalior), and YASH 25.0. 
+              My recent work includes contributing to sustainability-focused and cybersecurity-driven prototypes.
             </p>
             
             <div className="grid grid-cols-2 gap-4">
