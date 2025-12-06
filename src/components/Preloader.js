@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useLayoutEffect, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
@@ -14,7 +14,7 @@ const Preloader = () => {
   const blackBallRef = useRef(null);
 
   // 1. Detect Website Load
-  useLayoutEffect(() => {
+  useEffect(() => {
     document.body.style.overflow = "hidden"; // Lock scroll
 
     const handleLoad = () => {
