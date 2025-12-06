@@ -16,8 +16,8 @@ const About = () => {
             </div>
             <div className="absolute -bottom-6 -right-6 bg-zinc-900 p-6 rounded-xl border border-zinc-800 shadow-xl">
               <div className="flex items-center gap-4">
-                <div className="text-4xl font-bold text-orange-400">5+</div>
-                <div className="text-sm text-slate-400 leading-tight">Years of<br/>Experience</div>
+                <div className="text-4xl font-bold text-orange-400">3+</div>
+                <div className="text-sm text-slate-400 leading-tight">Years of<br/>Freelancing Experience</div>
               </div>
             </div>
           </div>
