@@ -13,20 +13,46 @@ const Contact = () => {
         </p>
         
         <div className="bg-zinc-900/80 rounded-2xl p-8 border border-zinc-800 shadow-xl text-left max-w-2xl mx-auto">
-           <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+           <form className="space-y-6" onSubmit={(e) => {
+             e.preventDefault();
+             const name = e.target.name.value;
+             const message = e.target.message.value;
+             window.location.href = `mailto:phiwarkhede05@gmail.com?subject=Portfolio Contact from ${name}&body=${message}`;
+           }}>
              <div className="grid md:grid-cols-2 gap-6">
                <div>
                  <label className="block text-sm font-medium text-slate-400 mb-2">Name</label>
-                 <input suppressHydrationWarning={true} type="text" className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" placeholder="John Doe" />
+                 <input 
+                   name="name"
+                   suppressHydrationWarning={true} 
+                   type="text" 
+                   required
+                   className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" 
+                   placeholder="Rahul Sharma" 
+                 />
                </div>
                <div>
                  <label className="block text-sm font-medium text-slate-400 mb-2">Email</label>
-                 <input suppressHydrationWarning={true} type="email" className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" placeholder="john@example.com" />
+                 <input 
+                   name="email"
+                   suppressHydrationWarning={true} 
+                   type="email" 
+                   required
+                   className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" 
+                   placeholder="rahul@example.com" 
+                 />
                </div>
              </div>
              <div>
                <label className="block text-sm font-medium text-slate-400 mb-2">Message</label>
-               <textarea suppressHydrationWarning={true} rows="4" className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" placeholder="Hello, I&apos;d like to talk about..."></textarea>
+               <textarea 
+                 name="message"
+                 suppressHydrationWarning={true} 
+                 rows="4" 
+                 required
+                 className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" 
+                 placeholder="Hello, I'd like to talk about..."
+               ></textarea>
              </div>
              <button suppressHydrationWarning={true} className="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-lg transition-all hover:shadow-lg hover:shadow-orange-500/20 flex items-center justify-center gap-2 invert-hover">
                <Send size={20} /> Send Message
