@@ -154,5 +154,5 @@ I use tabs over spaces
 </div>
 
 <div align="center">
-  <i>⭐️ Don't forget to star repositories you find interesting! ⭐️</i>
+  <i>⭐️⭐️ Don't forget to star repositories you find interesting! ⭐️⭐️</i>
 </div>
