@@ -14,28 +14,34 @@ const StarBackground = () => {
 
     // --- Star & Animation Constants ---
     const stars = [];
-    
-    // UPDATED: Check screen width to determine star count
     const isSmallScreen = window.innerWidth < 768;
-    const numStars = isSmallScreen ? 50 : 150; 
+    const numStars = isSmallScreen ? 60 : 180;
 
     const mouse = { x: null, y: null };
     
-    // Pre-calculate squared distances
     const connectionDistance = 150;
     const connectionDistSq = connectionDistance * connectionDistance;
     const mouseMaxDist = connectionDistance * 1.5;
     const mouseMaxDistSq = mouseMaxDist * mouseMaxDist;
 
-    // --- Star Class ---
+    // --- Star Class with subtle color tinting ---
     class Star {
       constructor(id) {
         this.id = id;
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1;
+        this.size = Math.random() * 2 + 0.5;
         this.speedX = (Math.random() - 0.5) * 0.3;
         this.speedY = (Math.random() - 0.5) * 0.3;
+        // Random color tint (mostly white, occasionally cyan/violet)
+        const colorRand = Math.random();
+        if (colorRand > 0.9) {
+          this.color = 'rgba(6, 182, 212, 0.8)'; // Cyan
+        } else if (colorRand > 0.8) {
+          this.color = 'rgba(139, 92, 246, 0.8)'; // Violet
+        } else {
+          this.color = 'rgba(255, 255, 255, 0.7)';
+        }
       }
       update() {
         this.x += this.speedX;
@@ -46,7 +52,7 @@ const StarBackground = () => {
         if (this.y < 0) this.y = canvas.height;
       }
       draw() {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+        ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -126,6 +132,7 @@ const StarBackground = () => {
         grid.insert(star);
       });
 
+      // Draw connections between nearby stars
       ctx.lineWidth = 0.5;
       stars.forEach((star) => {
         const neighbors = grid.getNearby(star.x, star.y);
@@ -136,8 +143,12 @@ const StarBackground = () => {
             const distSq = dx * dx + dy * dy;
 
             if (distSq < connectionDistSq) {
-              const opacity = 0.15 * (1 - distSq / connectionDistSq);
-              ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+              const opacity = 0.12 * (1 - distSq / connectionDistSq);
+              // Gradient line color
+              const gradient = ctx.createLinearGradient(star.x, star.y, neighbor.x, neighbor.y);
+              gradient.addColorStop(0, `rgba(6, 182, 212, ${opacity})`);
+              gradient.addColorStop(1, `rgba(139, 92, 246, ${opacity})`);
+              ctx.strokeStyle = gradient;
               ctx.beginPath();
               ctx.moveTo(star.x, star.y);
               ctx.lineTo(neighbor.x, neighbor.y);
@@ -147,6 +158,7 @@ const StarBackground = () => {
         });
       });
 
+      // Draw connections to mouse
       if (mouse.x !== null && mouse.y !== null) {
         ctx.lineWidth = 1;
         const nearbyStars = grid.getNearby(mouse.x, mouse.y);
@@ -157,8 +169,11 @@ const StarBackground = () => {
           const distSq = dx * dx + dy * dy;
 
           if (distSq < mouseMaxDistSq) {
-            const opacity = 0.3 * (1 - distSq / mouseMaxDistSq);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+            const opacity = 0.4 * (1 - distSq / mouseMaxDistSq);
+            const gradient = ctx.createLinearGradient(star.x, star.y, mouse.x, mouse.y);
+            gradient.addColorStop(0, `rgba(6, 182, 212, ${opacity})`);
+            gradient.addColorStop(1, `rgba(139, 92, 246, ${opacity})`);
+            ctx.strokeStyle = gradient;
             ctx.beginPath();
             ctx.moveTo(star.x, star.y);
             ctx.lineTo(mouse.x, mouse.y);
@@ -188,6 +203,9 @@ const StarBackground = () => {
 
   return (
     <>
+      {/* Aurora Background Overlay */}
+      <div className="aurora-bg" />
+      {/* Star Canvas */}
       <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />
     </>
   );

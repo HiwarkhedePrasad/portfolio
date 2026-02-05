@@ -6,118 +6,78 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(useGSAP);
 
 const Preloader = () => {
-  const [isSiteLoaded, setIsSiteLoaded] = useState(false);
-  const siteLoadedRef = useRef(false);
+  const [isComplete, setIsComplete] = useState(false);
   const containerRef = useRef(null);
-  const whiteBallRef = useRef(null);
-  const blackBallRef = useRef(null);
+  const linesRef = useRef([]);
 
-  // 1. Detect Website Load
+  const bootSequence = [
+    { text: 'PRASAD_SYS v2.0', type: 'success', delay: 100 },
+    { text: 'Initializing system...', type: 'dim', delay: 200 },
+    { text: '', type: 'dim', delay: 50 },
+    { text: 'Loading modules:', type: 'dim', delay: 150 },
+    { text: '  [OK] core/identity', type: 'normal', delay: 100 },
+    { text: '  [OK] core/projects', type: 'normal', delay: 120 },
+    { text: '  [OK] core/capabilities', type: 'normal', delay: 100 },
+    { text: '  [OK] core/terminal', type: 'normal', delay: 130 },
+    { text: '  [OK] core/interface', type: 'normal', delay: 100 },
+    { text: '', type: 'dim', delay: 50 },
+    { text: 'Memory check... 16384K OK', type: 'dim', delay: 200 },
+    { text: 'All systems nominal.', type: 'normal', delay: 150 },
+    { text: '', type: 'dim', delay: 100 },
+    { text: 'Ready._', type: 'success', delay: 300 },
+  ];
+
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    const handleLoad = () => {
-      setIsSiteLoaded(true);
-      siteLoadedRef.current = true;
-    };
+    let totalDelay = 0;
+    
+    bootSequence.forEach((line, index) => {
+      totalDelay += line.delay;
+      
+      setTimeout(() => {
+        if (linesRef.current[index]) {
+          linesRef.current[index].classList.add('visible');
+        }
+      }, totalDelay);
+    });
 
-    if (document.readyState === "complete") {
-      handleLoad();
-    } else {
-      window.addEventListener("load", handleLoad);
-    }
-    return () => window.removeEventListener("load", handleLoad);
+    // Complete after boot sequence
+    setTimeout(() => {
+      gsap.to(containerRef.current, {
+        opacity: 0,
+        duration: 0.4,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          setIsComplete(true);
+          document.body.style.overflow = '';
+        }
+      });
+    }, totalDelay + 400);
+
+    document.body.style.overflow = 'hidden';
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, []);
 
-  // 2. The Animation Sequence
-  useGSAP(() => {
-    const tl = gsap.timeline();
-
-    // --- Initial Setup ---
-    gsap.set(containerRef.current, { backgroundColor: "#000" });
-    gsap.set(whiteBallRef.current, { y: -150, scale: 1, autoAlpha: 1 });
-    gsap.set(blackBallRef.current, { y: -150, scale: 1, autoAlpha: 0 });
-
-    // === START OF THE LOOP ===
-    tl.addLabel("startLoop");
-
-    // ---------------------------
-    // PHASE 1: WHITE BALL (On Black BG)
-    // ---------------------------
-    tl.to(whiteBallRef.current, { y: 0, duration: 0.5, ease: "power2.in" })
-      .to(whiteBallRef.current, { y: -100, duration: 0.4, ease: "power2.out" })
-      .to(whiteBallRef.current, { y: 0, duration: 0.4, ease: "power2.in" })
-      // Expand White to cover screen
-      .to(whiteBallRef.current, {
-        scale: 100,
-        duration: 0.8,
-        ease: "expo.inOut",
-        onComplete: () => {
-          // 1. Screen is now visually WHITE (ball covered it).
-          // 2. We swap the container BG to WHITE behind the scenes.
-          gsap.set(containerRef.current, { backgroundColor: "#fff" });
-          
-          // 3. Hide White ball (redundant now) and Reset Black ball for next phase
-          gsap.set(whiteBallRef.current, { autoAlpha: 0 });
-          gsap.set(blackBallRef.current, { autoAlpha: 1, y: -150, scale: 1 });
-        },
-      });
-
-    // ---------------------------
-    // PHASE 2: BLACK BALL (On White BG)
-    // ---------------------------
-    tl.to(blackBallRef.current, { y: 0, duration: 0.5, ease: "power2.in" })
-      .to(blackBallRef.current, { y: -100, duration: 0.4, ease: "power2.out" })
-      .to(blackBallRef.current, { y: 0, duration: 0.4, ease: "power2.in" })
-      // Expand Black to cover screen
-      .to(blackBallRef.current, {
-        scale: 100,
-        duration: 0.8,
-        ease: "expo.inOut",
-        onComplete: () => {
-          // 1. Screen is now visually BLACK.
-          // 2. Swap container BG back to BLACK.
-          gsap.set(containerRef.current, { backgroundColor: "#000" });
-          
-          // 3. Hide Black ball and Reset White ball for the loop restart
-          gsap.set(blackBallRef.current, { autoAlpha: 0 });
-          gsap.set(whiteBallRef.current, { autoAlpha: 1, y: -150, scale: 1 });
-        },
-      });
-
-    // ---------------------------
-    // LOOP LOGIC
-    // ---------------------------
-    tl.call(() => {
-      // If site is NOT loaded, go back to the very start (White Ball)
-      if (!siteLoadedRef.current) {
-        tl.play("startLoop");
-      } else {
-        finishAnimation();
-      }
-    });
-
-  }, { scope: containerRef });
-
-  const finishAnimation = () => {
-    gsap.to(containerRef.current, {
-      opacity: 0,
-      duration: 0.5,
-      onComplete: () => {
-        document.body.style.overflow = "";
-        if (containerRef.current) {
-          containerRef.current.style.display = "none";
-        }
-      },
-    });
-  };
+  if (isComplete) return null;
 
   return (
-    <div
-      ref={containerRef}
-      className="fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden"
-    >
-      <div ref={whiteBallRef} className="absolute w-12 h-12 bg-white rounded-full" />
-      <div ref={blackBallRef} className="absolute w-12 h-12 bg-black rounded-full" />
+    <div ref={containerRef} className="preloader">
+      <div className="max-w-xl">
+        {bootSequence.map((line, index) => (
+          <div
+            key={index}
+            ref={el => linesRef.current[index] = el}
+            className={`boot-line ${line.type === 'dim' ? 'dim' : ''} ${line.type === 'success' ? 'success crt-glow' : ''}`}
+          >
+            {line.text}
+            {index === bootSequence.length - 1 && (
+              <span className="boot-cursor" />
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

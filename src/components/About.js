@@ -1,59 +1,86 @@
 'use client';
 import React from 'react';
-import { Code2, Terminal, Cpu } from 'lucide-react';
+import { Code2, Terminal, Cpu, Zap, Award, Calendar } from 'lucide-react';
 
 const About = () => {
+  const stats = [
+    { value: '3+', label: 'Years Experience', icon: Calendar },
+    { value: '15+', label: 'Projects Built', icon: Code2 },
+    { value: '5+', label: 'Hackathon Wins', icon: Award },
+  ];
+
   return (
-    <section id="about" className="py-20 bg-zinc-900/40 backdrop-blur-sm">
+    <section id="about" className="py-24 relative">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="relative">
-            <div className="aspect-square rounded-2xl bg-orange-500 p-1">
-              <div className="w-full h-full bg-black rounded-xl overflow-hidden flex items-center justify-center relative">
-                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')] bg-cover bg-center opacity-50 mix-blend-overlay"></div>
-                 <Code2 size={80} className="text-orange-400 relative z-10" />
-              </div>
-            </div>
-            <div className="absolute -bottom-6 -right-6 bg-zinc-900 p-6 rounded-xl border border-zinc-800 shadow-xl">
-              <div className="flex items-center gap-4">
-                <div className="text-4xl font-bold text-orange-400">3+</div>
-                <div className="text-sm text-slate-400 leading-tight">Years of<br/>Freelancing Experience</div>
-              </div>
-            </div>
-          </div>
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <h2 className="section-heading">
+            About <span className="gradient-text">Me</span>
+          </h2>
+          <p className="section-subheading mx-auto">
+            Passionate developer with a love for creating impactful digital solutions
+          </p>
+        </div>
+
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           
-          <div>
-            <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
-              <span className="w-12 h-1 bg-orange-500 rounded-full"></span>
-              About Me
-            </h2>
-            <p className="text-slate-400 mb-6 leading-relaxed">
-              I am a full-stack developer and AI practitioner pursuing a B.Tech in Artificial Intelligence and Data Science at <span className="text-orange-400">YCCE, Nagpur</span>. 
-              I have been building web and mobile applications as a freelance developer since 2022, working with the <span className="text-orange-400">MERN stack</span>, React, Django, Flutter, and Firebase. 
-              My interests extend into practical AI—fine-tuning models, integrating <span className="text-orange-400">Ollama-based workflows</span>, and creating applied machine-learning solutions.
-            </p>
-            <p className="text-slate-400 mb-6 leading-relaxed">
-              I have worked on projects spanning encrypted communication, cross-platform app development, and AI-driven systems, and represented YCCE at the <span className="text-orange-400">NASA Space Apps Challenge</span>. 
-              Previously associated with Edunet and Microspectra, I continue to expand my technical range through competitive environments.
-            </p>
-            <p className="text-slate-400 mb-8 leading-relaxed">
-              An active hackathon participant, I have received recognitions at Prototype 2.0, Infotsav (IIIT Gwalior), and YASH 25.0. 
-              My recent work includes contributing to sustainability-focused and cybersecurity-driven prototypes.
-            </p>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-black/50 rounded-lg border border-zinc-800">
-                <Terminal className="text-teal-400 mb-2" size={24} />
-                <h3 className="font-bold mb-1">Clean Code</h3>
-                <p className="text-sm text-slate-500">Readable & Maintainable</p>
+          {/* Main Bio Card - Spans 2 columns */}
+          <div className="md:col-span-2 glass-card p-8">
+            <div className="flex items-start gap-6">
+              {/* Avatar Area */}
+              <div className="hidden sm:block shrink-0">
+                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-cyan-500 to-violet-500 p-[2px]">
+                  <div className="w-full h-full rounded-2xl bg-slate-900 flex items-center justify-center">
+                    <Code2 size={40} className="text-cyan-400" />
+                  </div>
+                </div>
               </div>
-              <div className="p-4 bg-black/50 rounded-lg border border-zinc-800">
-                <Cpu className="text-red-400 mb-2" size={24} />
-                <h3 className="font-bold mb-1">Performance</h3>
-                <p className="text-sm text-slate-500">Optimized & Fast</p>
+              
+              <div>
+                <h3 className="text-2xl font-bold text-white mb-4">Prasad Hiwarkhede</h3>
+                <p className="text-slate-400 leading-relaxed mb-4">
+                  I&apos;m a <span className="text-cyan-400">full-stack developer</span> and AI practitioner pursuing B.Tech in AI & Data Science at YCCE, Nagpur. 
+                  Since 2022, I&apos;ve been building web and mobile apps with the <span className="text-violet-400">MERN stack</span>, React, Django, Flutter, and Firebase.
+                </p>
+                <p className="text-slate-400 leading-relaxed">
+                  My interests extend into practical AI—fine-tuning models, integrating Ollama-based workflows, and creating applied ML solutions. 
+                  I&apos;ve represented YCCE at the <span className="text-cyan-400">NASA Space Apps Challenge</span> and continue to expand my technical range through competitive environments.
+                </p>
               </div>
             </div>
           </div>
+
+          {/* Stats Cards */}
+          <div className="space-y-6">
+            {stats.map((stat, index) => (
+              <div key={index} className="glass-card p-6 text-center group">
+                <stat.icon size={24} className="mx-auto mb-3 text-cyan-400 group-hover:scale-110 transition-transform" />
+                <div className="text-3xl font-bold gradient-text mb-1">{stat.value}</div>
+                <div className="text-sm text-slate-400">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Skill Highlights - Bottom Row */}
+          <div className="glass-card p-6 group">
+            <Terminal className="text-cyan-400 mb-4 group-hover:scale-110 transition-transform" size={28} />
+            <h3 className="font-bold text-white mb-2">Clean Code</h3>
+            <p className="text-sm text-slate-400">Readable, maintainable, and well-documented</p>
+          </div>
+
+          <div className="glass-card p-6 group">
+            <Cpu className="text-violet-400 mb-4 group-hover:scale-110 transition-transform" size={28} />
+            <h3 className="font-bold text-white mb-2">Performance</h3>
+            <p className="text-sm text-slate-400">Optimized for speed and efficiency</p>
+          </div>
+
+          <div className="glass-card p-6 group">
+            <Zap className="text-pink-400 mb-4 group-hover:scale-110 transition-transform" size={28} />
+            <h3 className="font-bold text-white mb-2">Modern Stack</h3>
+            <p className="text-sm text-slate-400">Latest technologies and best practices</p>
+          </div>
+
         </div>
       </div>
     </section>

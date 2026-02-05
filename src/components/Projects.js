@@ -1,16 +1,15 @@
 'use client';
 import React from 'react';
-import { Layout, Github, ExternalLink } from 'lucide-react';
-import { useTransition } from '../context/TransitionContext';
+import { Github, ExternalLink, Folder } from 'lucide-react';
 
 const Projects = () => {
-  const { triggerTransition } = useTransition();
   const projects = [
     {
       title: "Chat-Secure",
       description: "A \"Zero-Trace\" messaging app where data never touches a hard drive. Runs entirely in volatile memory (RAM) with a \"Panic Button\" that instantly wipes encryption keys.",
       tags: ["Node.js", "Redis", "Signal Protocol", "E2EE"],
-      color: "from-red-600 to-rose-600",
+      gradient: "from-red-500/20 to-rose-500/20",
+      accentColor: "text-red-400",
       github: "#",
       live: "#"
     },
@@ -18,60 +17,104 @@ const Projects = () => {
       title: "ByteWise",
       description: "VS Code extension that visualizes invisible \"wasted bytes\" in C/C++ structs due to padding and alignment. Features a visual heatmap and one-click struct reordering.",
       tags: ["VS Code API", "TypeScript", "C/C++", "AST"],
-      color: "from-orange-600 to-amber-600",
+      gradient: "from-cyan-500/20 to-blue-500/20",
+      accentColor: "text-cyan-400",
       github: "#",
       live: "#"
     },
     {
       title: "Self-Correcting RAG Agent",
-      description: "A LangGraph-powered PDF chatbot that fact-checks itself. Uses a corrective pattern to grade retrieved chunks and rewrite queries if data is irrelevant, reducing hallucinations.",
+      description: "A LangGraph-powered PDF chatbot that fact-checks itself. Uses a corrective pattern to grade retrieved chunks and rewrite queries if data is irrelevant.",
       tags: ["LangGraph", "Python", "RAG", "LLM"],
-      color: "from-teal-600 to-emerald-600",
+      gradient: "from-violet-500/20 to-purple-500/20",
+      accentColor: "text-violet-400",
       github: "#",
       live: "#"
     }
   ];
 
   return (
-    <section id="projects" className="py-20 bg-black/20">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12">
+    <section id="projects" className="py-24 relative">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        {/* Section Header */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
-            <p className="text-slate-400">Some of the things I&apos;ve built recently.</p>
+            <h2 className="section-heading">
+              Featured <span className="gradient-text">Projects</span>
+            </h2>
+            <p className="section-subheading">
+              Some of the things I&apos;ve built recently
+            </p>
           </div>
-          <a href="https://www.github.com/hiwarkhedeprasad" className="hidden md:flex items-center gap-2 text-orange-400 hover:text-orange-300 transition-colors mt-4 md:mt-0 invert-hover">
-            View Github <ExternalLink size={16} />
+          <a 
+            href="https://www.github.com/hiwarkhedeprasad" 
+            className="group flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+          >
+            View GitHub 
+            <ExternalLink size={16} className="group-hover:translate-x-1 transition-transform" />
           </a>
         </div>
 
+        {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <div key={index} className="group bg-zinc-900/50 rounded-xl overflow-hidden border border-zinc-800 hover:border-zinc-700 transition-all hover:-translate-y-2">
-              {/* Project Image Placeholder */}
-              <div className={`h-48 w-full bg-gradient-to-br ${project.color} p-6 flex items-center justify-center relative overflow-hidden`}>
-                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                <Layout size={64} className="text-white/80 transform group-hover:scale-110 transition-transform duration-500" />
+            <div 
+              key={index} 
+              className="group glass-card overflow-hidden"
+              style={{ 
+                transform: 'perspective(1000px)',
+              }}
+            >
+              {/* Project Header with Gradient */}
+              <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} p-6 flex items-center justify-center relative overflow-hidden border-b border-white/5`}>
+                {/* Animated Background Pattern */}
+                <div className="absolute inset-0 opacity-30">
+                  <div className="absolute top-4 left-4 w-32 h-32 border border-white/20 rounded-full" />
+                  <div className="absolute bottom-4 right-4 w-24 h-24 border border-white/20 rounded-full" />
+                </div>
+                
+                <Folder 
+                  size={64} 
+                  className={`${project.accentColor} transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`} 
+                />
               </div>
               
+              {/* Project Content */}
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-2 group-hover:text-orange-400 transition-colors invert-hover">{project.title}</h3>
-                <p className="text-slate-400 text-sm mb-4 line-clamp-3">{project.description}</p>
+                <h3 className={`text-xl font-bold mb-3 group-hover:${project.accentColor} transition-colors`}>
+                  {project.title}
+                </h3>
+                <p className="text-slate-400 text-sm mb-5 leading-relaxed line-clamp-3">
+                  {project.description}
+                </p>
                 
+                {/* Tags */}
                 <div className="flex flex-wrap gap-2 mb-6">
                   {project.tags.map((tag) => (
-                    <span key={tag} className="text-xs px-2 py-1 rounded bg-zinc-800 text-slate-300 border border-zinc-700">
+                    <span key={tag} className="tag-pill">
                       {tag}
                     </span>
                   ))}
                 </div>
                 
-                <div className="flex items-center gap-4">
-                  <a href={project.github} className="flex items-center gap-2 text-sm font-medium text-slate-300 hover:text-white transition-colors invert-hover">
-                    <Github size={18} /> Code
+                {/* Links */}
+                <div className="flex items-center gap-4 pt-4 border-t border-white/5">
+                  <a 
+                    href={project.github} 
+                    className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors group/link"
+                  >
+                    <Github size={18} />
+                    <span className="animated-underline">Code</span>
                   </a>
-                  <a href={project.live} className="flex items-center gap-2 text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors invert-hover">
-                    <ExternalLink size={18} /> Live Demo
+                  <a 
+                    href={project.live} 
+                    className={`flex items-center gap-2 text-sm font-medium ${project.accentColor} hover:brightness-125 transition-all group/link`}
+                  >
+                    <ExternalLink size={18} />
+                    <span className="animated-underline">Live Demo</span>
                   </a>
                 </div>
               </div>

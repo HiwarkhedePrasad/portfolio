@@ -1,63 +1,128 @@
 'use client';
-import React from 'react';
-import { Send } from 'lucide-react';
+import React, { useState } from 'react';
+import { Send, Loader2, Mail, User, MessageSquare } from 'lucide-react';
 
 const Contact = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    const name = e.target.name.value;
+    const message = e.target.message.value;
+    
+    // Simulate brief loading then redirect
+    setTimeout(() => {
+      window.location.href = `mailto:phiwarkhede05@gmail.com?subject=Portfolio Contact from ${name}&body=${message}`;
+      setIsSubmitting(false);
+    }, 500);
+  };
+
   return (
-    <section id="contact" className="py-20">
-      <div className="max-w-4xl mx-auto px-6 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Get In Touch</h2>
-        <p className="text-slate-400 mb-12 max-w-2xl mx-auto">
-          I&apos;m currently looking for new opportunities, my inbox is always open. 
-          Whether you have a question or just want to say hi, I&apos;ll try my best to get back to you!
-        </p>
+    <section id="contact" className="py-24 relative">
+      {/* Background Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-cyan-500/5 via-transparent to-transparent pointer-events-none" />
+      
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <h2 className="section-heading">
+            Get In <span className="gradient-text">Touch</span>
+          </h2>
+          <p className="section-subheading mx-auto">
+            I&apos;m currently looking for new opportunities. Whether you have a question or just want to say hi, I&apos;ll try my best to get back to you!
+          </p>
+        </div>
         
-        <div className="bg-zinc-900/80 rounded-2xl p-8 border border-zinc-800 shadow-xl text-left max-w-2xl mx-auto">
-           <form className="space-y-6" onSubmit={(e) => {
-             e.preventDefault();
-             const name = e.target.name.value;
-             const message = e.target.message.value;
-             window.location.href = `mailto:phiwarkhede05@gmail.com?subject=Portfolio Contact from ${name}&body=${message}`;
-           }}>
-             <div className="grid md:grid-cols-2 gap-6">
-               <div>
-                 <label className="block text-sm font-medium text-slate-400 mb-2">Name</label>
-                 <input 
-                   name="name"
-                   suppressHydrationWarning={true} 
-                   type="text" 
-                   required
-                   className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" 
-                   placeholder="Rahul Sharma" 
-                 />
-               </div>
-               <div>
-                 <label className="block text-sm font-medium text-slate-400 mb-2">Email</label>
-                 <input 
-                   name="email"
-                   suppressHydrationWarning={true} 
-                   type="email" 
-                   required
-                   className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" 
-                   placeholder="rahul@example.com" 
-                 />
-               </div>
-             </div>
-             <div>
-               <label className="block text-sm font-medium text-slate-400 mb-2">Message</label>
-               <textarea 
-                 name="message"
-                 suppressHydrationWarning={true} 
-                 rows="4" 
-                 required
-                 className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors" 
-                 placeholder="Hello, I'd like to talk about..."
-               ></textarea>
-             </div>
-             <button suppressHydrationWarning={true} className="w-full bg-orange-600 hover:bg-orange-500 text-white font-bold py-4 rounded-lg transition-all hover:shadow-lg hover:shadow-orange-500/20 flex items-center justify-center gap-2 invert-hover">
-               <Send size={20} /> Send Message
-             </button>
-           </form>
+        {/* Contact Form Card */}
+        <div className="glass-card p-8 md:p-10 max-w-2xl mx-auto">
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Name Field */}
+              <div className="relative group">
+                <label className="block text-sm font-medium text-slate-400 mb-2 group-focus-within:text-cyan-400 transition-colors">
+                  <User size={14} className="inline mr-2" />
+                  Name
+                </label>
+                <input 
+                  name="name"
+                  suppressHydrationWarning={true} 
+                  type="text" 
+                  required
+                  className="input-cosmic" 
+                  placeholder="John Doe" 
+                />
+              </div>
+              
+              {/* Email Field */}
+              <div className="relative group">
+                <label className="block text-sm font-medium text-slate-400 mb-2 group-focus-within:text-cyan-400 transition-colors">
+                  <Mail size={14} className="inline mr-2" />
+                  Email
+                </label>
+                <input 
+                  name="email"
+                  suppressHydrationWarning={true} 
+                  type="email" 
+                  required
+                  className="input-cosmic" 
+                  placeholder="john@example.com" 
+                />
+              </div>
+            </div>
+            
+            {/* Message Field */}
+            <div className="relative group">
+              <label className="block text-sm font-medium text-slate-400 mb-2 group-focus-within:text-cyan-400 transition-colors">
+                <MessageSquare size={14} className="inline mr-2" />
+                Message
+              </label>
+              <textarea 
+                name="message"
+                suppressHydrationWarning={true} 
+                rows="5" 
+                required
+                className="input-cosmic resize-none" 
+                placeholder="Hello, I'd like to talk about..."
+              />
+            </div>
+            
+            {/* Submit Button */}
+            <button 
+              type="submit"
+              disabled={isSubmitting}
+              suppressHydrationWarning={true} 
+              className="btn-gradient w-full flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send size={20} />
+                  Send Message
+                </>
+              )}
+            </button>
+          </form>
+          
+          {/* Or Divider */}
+          <div className="flex items-center gap-4 my-8">
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+            <span className="text-slate-500 text-sm">or email directly</span>
+            <div className="flex-1 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+          </div>
+          
+          {/* Direct Email */}
+          <a 
+            href="mailto:phiwarkhede05@gmail.com"
+            className="block text-center text-cyan-400 hover:text-cyan-300 transition-colors font-medium"
+          >
+            phiwarkhede05@gmail.com
+          </a>
         </div>
       </div>
     </section>

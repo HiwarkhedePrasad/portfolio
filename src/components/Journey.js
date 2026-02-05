@@ -1,6 +1,6 @@
 "use client";
 import React from 'react';
-import { Milestone, Calendar, Trophy, Star } from 'lucide-react';
+import { Trophy, Star, Award, Calendar, Sparkles } from 'lucide-react';
 
 const Journey = () => {
   const journeyItems = [
@@ -8,105 +8,141 @@ const Journey = () => {
       title: "Hack-a-Tron (IIIT Gwalior)",
       role: "Top 100",
       date: "Nov 2025",
-      description: "Survived a 36-hour hackathon at Infotsav 2025. A test of endurance involving caffeine, code, and chaos, resulting in an unforgettable team bonding experience.",
+      description: "Survived a 36-hour hackathon at Infotsav 2025. A test of endurance involving caffeine, code, and chaos.",
       icon: <Trophy size={20} />,
-      tags: ["Hackathon", "Teamwork", "Problem Solving"]
-    },{
+      tags: ["Hackathon", "Teamwork", "Problem Solving"],
+      color: "cyan"
+    },
+    {
       title: "Central India Hackathon 2.0",
       role: "Top 12 Finalist",
       date: "June 2025",
-      description: "Battled into the Top 12 out of 800+ teams in this 24-hour coding marathon at Suryodaya College. A story of redemption and resilience, overcoming technical roadblocks to build a functional prototype in the final hour.",
-      icon: <Milestone size={20} />,
-      tags: ["Top 12", "Resilience", "Innovation"]
+      description: "Battled into the Top 12 out of 800+ teams. Overcame technical roadblocks to build a functional prototype in the final hour.",
+      icon: <Award size={20} />,
+      tags: ["Top 12", "Resilience", "Innovation"],
+      color: "violet"
     },
     {
       title: "Prototype 2.0 Hackathon",
       role: "Top 7 & Category Winner",
       date: "May 2025",
-      description: "Built a 'Carbon-Footprint Tracker' with Team DCode. Secured a spot in the top 7 and won 'Best Use of Supabase'.",
+      description: "Built a 'Carbon-Footprint Tracker' with Team DCode. Won 'Best Use of Supabase'.",
       icon: <Star size={20} />,
-      tags: ["Supabase", "React", "Sustainability"]
+      tags: ["Supabase", "React", "Sustainability"],
+      color: "pink"
     },
     {
       title: "YASH 25.0 Double Win",
       role: "Winner",
       date: "Mar 2025",
-      description: "Won both the 'Enigma Hackathon' and 'Code & Canvas' competitions at YCCE's YASH 25.0 event, showcasing technical skills and creativity.",
+      description: "Won both 'Enigma Hackathon' and 'Code & Canvas' competitions at YCCE's YASH 25.0 event.",
       icon: <Trophy size={20} />,
-      tags: ["Hackathon", "Creative Coding", "YCCE"]
+      tags: ["Hackathon", "Creative Coding", "YCCE"],
+      color: "cyan"
     },
   ];
 
-  return (
-    <section id="journey" className="py-20 relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full bg-zinc-900/20 -z-10" />
-      
-      <div className="max-w-4xl mx-auto px-6">
-        <h2 className="text-3xl md:text-4xl font-bold mb-16 text-center flex items-center justify-center gap-3">
-          <Milestone className="text-orange-500" size={32} />
-          My Journey
-        </h2>
+  const colorClasses = {
+    cyan: {
+      bg: 'bg-cyan-500/10',
+      border: 'border-cyan-500/30',
+      text: 'text-cyan-400',
+      glow: 'shadow-cyan-500/20'
+    },
+    violet: {
+      bg: 'bg-violet-500/10',
+      border: 'border-violet-500/30',
+      text: 'text-violet-400',
+      glow: 'shadow-violet-500/20'
+    },
+    pink: {
+      bg: 'bg-pink-500/10',
+      border: 'border-pink-500/30',
+      text: 'text-pink-400',
+      glow: 'shadow-pink-500/20'
+    }
+  };
 
+  return (
+    <section id="journey" className="py-24 relative overflow-hidden">
+      <div className="max-w-4xl mx-auto px-6">
+        {/* Section Header */}
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <Sparkles className="text-cyan-400" size={24} />
+            <h2 className="section-heading">
+              My <span className="gradient-text">Journey</span>
+            </h2>
+          </div>
+          <p className="section-subheading mx-auto">
+            Hackathons, competitions, and milestones
+          </p>
+        </div>
+
+        {/* Timeline */}
         <div className="relative">
           {/* Vertical Line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-orange-500/20 via-orange-500/50 to-orange-500/20 transform md:-translate-x-1/2" />
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px timeline-line md:-translate-x-px" />
 
           <div className="space-y-12">
-            {journeyItems.map((item, index) => (
-              <div key={index} className={`relative flex flex-col md:flex-row gap-8 ${
-                index % 2 === 0 ? 'md:flex-row-reverse' : ''
-              }`}>
-                
-                {/* Timeline Dot */}
-                <div className="absolute left-4 md:left-1/2 w-4 h-4 bg-zinc-900 border-2 border-orange-500 rounded-full transform -translate-x-1/2 mt-1.5 z-10 shadow-[0_0_10px_rgba(249,115,22,0.5)]" />
-
-                {/* Content Card */}
-                <div className={`flex-1 ml-12 md:ml-0 ${
-                  index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'
+            {journeyItems.map((item, index) => {
+              const colors = colorClasses[item.color];
+              
+              return (
+                <div key={index} className={`relative flex flex-col md:flex-row gap-8 ${
+                  index % 2 === 0 ? 'md:flex-row-reverse' : ''
                 }`}>
-                  <div className="group relative bg-zinc-900/50 p-6 rounded-2xl border border-zinc-800 hover:border-orange-500/50 transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-orange-500/5">
-                    
-                    {/* Date Badge */}
-                    <div className={`inline-flex items-center gap-2 text-xs font-medium text-orange-400 bg-orange-500/10 px-3 py-1 rounded-full mb-4 ${
-                      index % 2 === 0 ? 'md:ml-auto' : ''
-                    }`}>
-                      <Calendar size={12} />
-                      {item.date}
-                    </div>
+                  
+                  {/* Timeline Dot */}
+                  <div className={`absolute left-4 md:left-1/2 w-4 h-4 rounded-full -translate-x-1/2 z-10 ${colors.bg} border-2 ${colors.border} shadow-lg ${colors.glow}`} />
 
-                    <h3 className="text-xl font-bold text-white mb-1 group-hover:text-orange-400 transition-colors">
-                      {item.title}
-                    </h3>
-                    
-                    <div className={`text-sm text-zinc-400 font-medium mb-3 flex items-center gap-2 ${
-                      index % 2 === 0 ? 'md:justify-end' : ''
-                    }`}>
-                      <span className="text-orange-500">{item.icon}</span>
-                      {item.role}
-                    </div>
+                  {/* Content Card */}
+                  <div className={`flex-1 ml-12 md:ml-0 ${
+                    index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12'
+                  }`}>
+                    <div className="group glass-card p-6 hover:shadow-lg transition-all">
+                      
+                      {/* Date Badge */}
+                      <div className={`inline-flex items-center gap-2 text-xs font-medium ${colors.text} ${colors.bg} px-3 py-1 rounded-full mb-4 ${
+                        index % 2 === 0 ? 'md:ml-auto' : ''
+                      }`}>
+                        <Calendar size={12} />
+                        {item.date}
+                      </div>
 
-                    <p className="text-zinc-400 text-sm leading-relaxed mb-4">
-                      {item.description}
-                    </p>
+                      <h3 className="text-xl font-bold text-white mb-1 group-hover:text-cyan-400 transition-colors">
+                        {item.title}
+                      </h3>
+                      
+                      <div className={`text-sm font-medium mb-3 flex items-center gap-2 ${colors.text} ${
+                        index % 2 === 0 ? 'md:justify-end' : ''
+                      }`}>
+                        <span>{item.icon}</span>
+                        {item.role}
+                      </div>
 
-                    {/* Tags */}
-                    <div className={`flex flex-wrap gap-2 ${
-                      index % 2 === 0 ? 'md:justify-end' : ''
-                    }`}>
-                      {item.tags.map((tag, i) => (
-                        <span key={i} className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-1 rounded border border-zinc-700/50">
-                          {tag}
-                        </span>
-                      ))}
+                      <p className="text-slate-400 text-sm leading-relaxed mb-4">
+                        {item.description}
+                      </p>
+
+                      {/* Tags */}
+                      <div className={`flex flex-wrap gap-2 ${
+                        index % 2 === 0 ? 'md:justify-end' : ''
+                      }`}>
+                        {item.tags.map((tag, i) => (
+                          <span key={i} className="tag-pill">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Empty Space for alternate side */}
-                <div className="hidden md:block flex-1" />
-              </div>
-            ))}
+                  {/* Empty Space for alternate side */}
+                  <div className="hidden md:block flex-1" />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

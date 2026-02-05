@@ -7,7 +7,7 @@ const Skills = () => {
   const engineRef = useRef(null);
   const [matterLoaded, setMatterLoaded] = useState(false);
 
-  // Skill Data
+  // Skill Data with updated colors
   const skills = [
     { name: "React", slug: "react", color: "#61DAFB" },
     { name: "Next.js", slug: "nextdotjs", color: "#ffffff" },
@@ -96,9 +96,8 @@ const Skills = () => {
     // --- SKILLS CREATION ---
     const createSkillNode = (x, y, radius, skill) => {
       const body = Bodies.circle(x, y, radius, {
-        restitution: 0.6, // Slightly bouncier
+        restitution: 0.6,
         friction: 0.001,
-        // --- CHANGED: Lower air friction for faster movement (was 0.05) ---
         frictionAir: 0.04, 
         mass: 1, 
         render: {
@@ -160,34 +159,30 @@ const Skills = () => {
       };
 
       bodies.forEach((body, index) => {
-        // 1. AMBIENT FLOAT (Faster Drift)
-        // Increased multiplier from 0.00005 to 0.0002 for more life
+        // AMBIENT FLOAT
         const oscX = Math.sin(time * 0.001 + index) * 0.00008; 
         const oscY = Math.cos(time * 0.001 + index) * 0.00008;
         
         Matter.Body.applyForce(body, body.position, { x: oscX, y: oscY });
 
-        // 2. CENTER ATTRACTION
+        // CENTER ATTRACTION
         const dx = canvasCenter.x - body.position.x;
         const dy = canvasCenter.y - body.position.y;
         
-        // Increased slightly to keep them together since they move faster now
         const forceStrength = 0.000008; 
         Matter.Body.applyForce(body, body.position, {
           x: dx * forceStrength * body.mass,
           y: dy * forceStrength * body.mass
         });
 
-        // 3. MOUSE REPULSION (Stronger & Wider)
+        // MOUSE REPULSION WITH GLOW EFFECT
         const mDx = body.position.x - mousePos.x;
         const mDy = body.position.y - mousePos.y;
         const mDist = Math.sqrt(mDx * mDx + mDy * mDy);
         
-        // --- CHANGED: Repel Range increased from 100 to 250 ---
         const repelRange = 250; 
 
         if (mDist < repelRange) {
-          // --- CHANGED: Repel Force increased significantly ---
           const repelForce = 0.05 * (1 - mDist / repelRange);
           Matter.Body.applyForce(body, body.position, {
             x: (mDx / mDist) * repelForce * body.mass,
@@ -228,20 +223,21 @@ const Skills = () => {
     <div 
       id="skills"
       ref={containerRef}
-      className="flex h-[80vh] w-full overflow-hidden items-center justify-center relative bg-slate-900/0"
+      className="flex h-[80vh] w-full overflow-hidden items-center justify-center relative"
     >
+      {/* Header Overlay */}
       <div className="absolute top-0 left-0 w-full h-full z-30 pointer-events-none flex flex-col justify-start pt-20">
-        <div className="max-w-7xl mx-auto px-6 w-full">
-          <h2 className="text-3xl font-bold mb-6 flex items-center gap-2">
-            <span className="w-12 h-1 bg-orange-500 rounded-full"></span>
-            My Skills
+        <div className="max-w-7xl mx-auto px-6 w-full text-center">
+          <h2 className="section-heading">
+            My <span className="gradient-text">Skills</span>
           </h2>
-          <p className="text-slate-400 max-w-2xl">
-            A dynamic representation of the technologies I work with. 
-            Move your mouse to interact with the cloud.
+          <p className="section-subheading mx-auto">
+            Move your mouse to interact with the technology cloud
           </p>
         </div>
       </div>
+      
+      {/* Matter.js Canvas */}
       <canvas
         ref={canvasRef}
         className="z-20 w-full h-full block"

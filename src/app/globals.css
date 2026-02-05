@@ -1,12 +1,476 @@
 @import "tailwindcss";
 
-/* Add this custom animation for the loader bar */
-@keyframes progress {
-  0% { transform: scaleX(0); }
-  50% { transform: scaleX(0.5); }
-  100% { transform: scaleX(1); }
+/* ============================================
+   MONOCHROME RETRO PORTFOLIO
+   Retro Computing × Modern Discipline
+   ============================================ */
+
+:root {
+  /* Strictly Monochrome Palette */
+  --black: #0a0a0a;
+  --gray-900: #141414;
+  --gray-800: #1f1f1f;
+  --gray-700: #2a2a2a;
+  --gray-600: #3a3a3a;
+  --gray-500: #5a5a5a;
+  --gray-400: #8a8a8a;
+  --gray-300: #a0a0a0;
+  --gray-200: #c0c0c0;
+  --gray-100: #e0e0e0;
+  --white: #f5f5f5;
+  
+  /* Spacing */
+  --gap: 0.75rem;
+  --radius: 0.25rem;
 }
 
-.animate-progress {
-  animation: progress 1.5s ease-in-out infinite;
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--black);
+  color: var(--white);
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--white);
+  color: var(--black);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3 {
+  font-family: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.mono {
+  font-family: 'SF Mono', 'Fira Code', 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.text-xs { font-size: 0.7rem; }
+.text-sm { font-size: 0.8rem; }
+.text-base { font-size: 0.9rem; }
+.text-lg { font-size: 1.1rem; }
+.text-xl { font-size: 1.4rem; }
+.text-2xl { font-size: 2rem; }
+.text-3xl { font-size: 2.5rem; }
+
+/* ============================================
+   BENTO GRID
+   ============================================ */
+
+.bento-container {
+  min-height: 100vh;
+  padding: var(--gap);
+}
+
+.bento-grid {
+  display: grid;
+  gap: var(--gap);
+  max-width: 1400px;
+  margin: 0 auto;
+  
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-areas:
+    "id id id id  work work work work work work work work"
+    "id id id id  work work work work work work work work"
+    "id id id id  work work work work work work work work"
+    "cap cap cap cap cap cap  term term term term term term"
+    "cap cap cap cap cap cap  term term term term term term"
+    "notes notes notes notes notes notes  contact contact contact contact contact contact";
+}
+
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas:
+      "id id id id id id"
+      "work work work work work work"
+      "work work work work work work"
+      "cap cap cap term term term"
+      "notes notes notes notes notes notes"
+      "contact contact contact contact contact contact";
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "id"
+      "work"
+      "cap"
+      "term"
+      "notes"
+      "contact";
+  }
+}
+
+.block-identity { grid-area: id; }
+.block-work { grid-area: work; }
+.block-capabilities { grid-area: cap; }
+.block-terminal { grid-area: term; }
+.block-notes { grid-area: notes; }
+.block-contact { grid-area: contact; }
+
+/* ============================================
+   PANEL STYLES
+   ============================================ */
+
+.panel {
+  background: var(--gray-900);
+  border: 1px solid var(--gray-700);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+  position: relative;
+}
+
+.panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.panel:hover {
+  border-color: var(--gray-500);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--gray-700);
+}
+
+.panel-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gray-400);
+}
+
+/* ============================================
+   TERMINAL STYLES
+   ============================================ */
+
+.terminal {
+  background: var(--black);
+  border: 1px solid var(--gray-600);
+  font-family: 'SF Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 0.75rem;
+  background: var(--gray-800);
+  border-bottom: 1px solid var(--gray-700);
+}
+
+.terminal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gray-500);
+}
+
+.terminal-body {
+  padding: 0.75rem;
+  min-height: 150px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.terminal-line {
+  margin-bottom: 0.25rem;
+  color: var(--gray-300);
+}
+
+.terminal-line.system {
+  color: var(--gray-500);
+}
+
+.terminal-line.success {
+  color: var(--white);
+}
+
+.terminal-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--gray-700);
+  background: var(--gray-900);
+}
+
+.terminal-prompt {
+  color: var(--gray-400);
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: var(--white);
+  animation: cursor-blink 1s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ============================================
+   PROJECT CARDS
+   ============================================ */
+
+.project-card {
+  padding: 1rem;
+  background: var(--gray-800);
+  border: 1px solid var(--gray-700);
+  border-radius: var(--radius);
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  background: var(--gray-700);
+  border-color: var(--gray-500);
+  transform: translateY(-2px);
+}
+
+.project-card h4 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: var(--white);
+}
+
+.project-meta {
+  font-size: 0.7rem;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.project-text {
+  font-size: 0.8rem;
+  color: var(--gray-300);
+  line-height: 1.5;
+}
+
+/* ============================================
+   CAPABILITY PILLS
+   ============================================ */
+
+.capability-group {
+  margin-bottom: 1rem;
+}
+
+.capability-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-400);
+  margin-bottom: 0.5rem;
+}
+
+.capability-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.capability-pill {
+  padding: 0.25rem 0.5rem;
+  background: var(--gray-800);
+  border: 1px solid var(--gray-600);
+  border-radius: 2px;
+  font-size: 0.7rem;
+  color: var(--gray-300);
+  transition: all 0.15s ease;
+}
+
+.capability-pill:hover {
+  background: var(--gray-700);
+  border-color: var(--gray-400);
+  color: var(--white);
+}
+
+/* ============================================
+   NOTES STYLES
+   ============================================ */
+
+.note-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--gray-800);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.note-item:last-child {
+  border-bottom: none;
+}
+
+.note-marker {
+  width: 4px;
+  height: 4px;
+  background: var(--gray-500);
+  border-radius: 50%;
+  margin-top: 0.5rem;
+  flex-shrink: 0;
+}
+
+.note-text {
+  font-size: 0.8rem;
+  color: var(--gray-300);
+  font-style: italic;
+}
+
+.note-tag {
+  font-size: 0.65rem;
+  color: var(--gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.25rem;
+}
+
+/* ============================================
+   PRELOADER / BOOT SEQUENCE
+   ============================================ */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem;
+  font-family: 'SF Mono', ui-monospace, monospace;
+  font-size: 0.8rem;
+  overflow: hidden;
+}
+
+.boot-line {
+  color: var(--gray-300);
+  margin-bottom: 0.25rem;
+  opacity: 0;
+  transform: translateY(5px);
+}
+
+.boot-line.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.1s ease, transform 0.1s ease;
+}
+
+.boot-line.dim {
+  color: var(--gray-500);
+}
+
+.boot-line.success {
+  color: var(--white);
+}
+
+.boot-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--white);
+  animation: cursor-blink 0.5s steps(1) infinite;
+  vertical-align: middle;
+  margin-left: 2px;
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--gray-600);
+  border-radius: var(--radius);
+  color: var(--gray-300);
+  font-family: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn:hover {
+  background: var(--gray-800);
+  border-color: var(--gray-400);
+  color: var(--white);
+}
+
+.btn-primary {
+  background: var(--white);
+  border-color: var(--white);
+  color: var(--black);
+}
+
+.btn-primary:hover {
+  background: var(--gray-200);
+  border-color: var(--gray-200);
+}
+
+/* ============================================
+   CRT GLOW EFFECT (subtle)
+   ============================================ */
+
+.crt-glow {
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-900);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray-600);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-500);
 }
