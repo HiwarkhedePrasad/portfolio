@@ -7,6 +7,7 @@ gsap.registerPlugin(useGSAP);
 
 const Preloader = () => {
   const [isComplete, setIsComplete] = useState(false);
+  const [hasSeenLoader, setHasSeenLoader] = useState(true); // Default to true to prevent flash
   const containerRef = useRef(null);
   const linesRef = useRef([]);
 
@@ -27,7 +28,21 @@ const Preloader = () => {
     { text: 'Ready._', type: 'success', delay: 300 },
   ];
 
+  // Check if user has already seen the loader (runs once on mount)
   useEffect(() => {
+    const seen = sessionStorage.getItem('preloader_seen');
+    if (seen) {
+      setIsComplete(true);
+      setHasSeenLoader(true);
+    } else {
+      setHasSeenLoader(false);
+    }
+  }, []);
+
+  // Run boot sequence only if user hasn't seen it
+  useEffect(() => {
+    if (hasSeenLoader) return;
+    
     let totalDelay = 0;
     
     bootSequence.forEach((line, index) => {
@@ -48,6 +63,8 @@ const Preloader = () => {
         ease: 'power2.inOut',
         onComplete: () => {
           setIsComplete(true);
+          // Mark as seen for this session
+          sessionStorage.setItem('preloader_seen', 'true');
           document.body.style.overflow = '';
         }
       });
@@ -58,9 +75,10 @@ const Preloader = () => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, []);
+  }, [hasSeenLoader]);
 
-  if (isComplete) return null;
+  // Don't render if already seen or complete
+  if (isComplete || hasSeenLoader) return null;
 
   return (
     <div ref={containerRef} className="preloader">

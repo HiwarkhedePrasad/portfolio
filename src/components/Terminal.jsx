@@ -1,7 +1,8 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
+import { Maximize2, Minimize2 } from 'lucide-react';
 
-const Terminal = () => {
+const Terminal = ({ isExpanded, onToggleExpand }) => {
   const [history, setHistory] = useState([
     { type: 'system', text: 'PRASAD_SYS Terminal v1.0' },
     { type: 'system', text: 'Type "help" for available commands.' },
@@ -84,14 +85,26 @@ const Terminal = () => {
 
   return (
     <div 
-      className="terminal h-full flex flex-col"
+      className={`terminal flex flex-col ${isExpanded ? 'h-full' : 'h-full'}`}
       onClick={() => inputRef.current?.focus()}
     >
-      <div className="terminal-header">
+      <div className="terminal-header flex items-center">
         <span className="terminal-dot" />
         <span className="terminal-dot" />
         <span className="terminal-dot" />
-        <span className="text-xs text-gray-500 ml-2">terminal</span>
+        <span className="text-xs text-gray-500 ml-2 flex-1">terminal</span>
+        
+        {/* Expand/Collapse Button */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleExpand?.();
+          }}
+          className="p-1.5 rounded hover:bg-gray-700 transition-colors text-gray-400 hover:text-white"
+          title={isExpanded ? 'Minimize' : 'Expand'}
+        >
+          {isExpanded ? <Minimize2 size={14} /> : <Maximize2 size={14} />}
+        </button>
       </div>
 
       <div ref={bodyRef} className="terminal-body flex-1 overflow-y-auto">

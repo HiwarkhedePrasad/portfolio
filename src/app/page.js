@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Terminal from '../components/Terminal';
 import Preloader from '../components/Preloader';
@@ -10,7 +10,7 @@ import { ArrowUpRight, Mail, Github } from 'lucide-react';
 // ============================================
 const IdentityBlock = () => {
   return (
-    <div className="panel block-identity flex flex-col justify-between h-full">
+    <div className="panel block-identity">
       <div>
         <div className="panel-header">
           <span className="panel-label">Identity</span>
@@ -153,10 +153,10 @@ const CapabilitiesBlock = () => {
 // ============================================
 // TERMINAL BLOCK
 // ============================================
-const TerminalBlock = () => {
+const TerminalBlock = ({ isExpanded, onToggleExpand }) => {
   return (
-    <div className="block-terminal">
-      <Terminal />
+    <div className={`block-terminal transition-all duration-500 ease-out ${isExpanded ? 'terminal-expanded' : ''}`}>
+      <Terminal isExpanded={isExpanded} onToggleExpand={onToggleExpand} />
     </div>
   );
 };
@@ -229,20 +229,48 @@ const ContactBlock = () => {
 // MAIN PAGE
 // ============================================
 const HomePage = () => {
+  const [terminalExpanded, setTerminalExpanded] = useState(false);
+
   return (
     <>
       <Preloader />
       
-      <main className="bento-container">
-        <div className="bento-grid">
-          <IdentityBlock />
-          <WorkBlock />
-          <CapabilitiesBlock />
-          <TerminalBlock />
-          <NotesBlock />
-          <ContactBlock />
-        </div>
-      </main>
+      {terminalExpanded ? (
+        // EXPANDED MODE: Split layout
+        <main className="h-screen flex overflow-hidden p-3 gap-3 bg-[#0a0a0a]">
+          {/* Left side - scrollable content */}
+          <div className="flex-1 overflow-y-auto pr-2 space-y-3">
+            <IdentityBlock />
+            <WorkBlock />
+            <CapabilitiesBlock />
+            <NotesBlock />
+            <ContactBlock />
+          </div>
+          
+          {/* Right side - fixed terminal */}
+          <div className="w-1/2 flex-shrink-0 h-full">
+            <Terminal 
+              isExpanded={terminalExpanded} 
+              onToggleExpand={() => setTerminalExpanded(!terminalExpanded)} 
+            />
+          </div>
+        </main>
+      ) : (
+        // NORMAL MODE: Bento grid
+        <main className="bento-container">
+          <div className="bento-grid">
+            <IdentityBlock />
+            <WorkBlock />
+            <CapabilitiesBlock />
+            <TerminalBlock 
+              isExpanded={terminalExpanded} 
+              onToggleExpand={() => setTerminalExpanded(!terminalExpanded)} 
+            />
+            <NotesBlock />
+            <ContactBlock />
+          </div>
+        </main>
+      )}
     </>
   );
 };

@@ -129,6 +129,32 @@ h1, h2, h3 {
 .block-contact { grid-area: contact; }
 
 /* ============================================
+   TERMINAL EXPANDED STYLES
+   ============================================ */
+
+.terminal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 200px;
+}
+
+.terminal .terminal-header {
+  flex-shrink: 0;
+}
+
+.terminal .terminal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0; /* Important for flex scroll */
+}
+
+.terminal .terminal-input {
+  flex-shrink: 0;
+  margin-top: auto; /* Push to bottom */
+}
+
+/* ============================================
    PANEL STYLES
    ============================================ */
 
