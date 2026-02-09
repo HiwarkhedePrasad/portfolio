@@ -64,6 +64,13 @@ const WorkBlock = () => {
       challenge: 'Grading retrieval before generation',
       impact: '~40% reduction in hallucinations',
     },
+    {
+      title: 'Heimdall',
+      problem: 'Origin servers are vulnerable to complex L4/L7 DDoS attacks',
+      approach: 'Hybrid defense using Deterministic Rules (L7) and Isolation Forest ML (L4)',
+      challenge: 'Distinguishing flash crowds from malicious traffic in real-time',
+      impact: 'Adaptive, self-healing shield against multi-vector attacks',
+    },
   ];
 
   return (
@@ -72,9 +79,9 @@ const WorkBlock = () => {
         <span className="panel-label">Selected Work</span>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div className="flex overflow-x-auto gap-4 pb-4 -mx-2 px-2 snap-x">
         {projects.map((project, i) => (
-          <div key={i} className="project-card">
+          <div key={i} className="project-card min-w-[300px] md:min-w-[350px] flex-shrink-0 snap-center">
             <h4>{project.title}</h4>
             
             <div className="space-y-2">

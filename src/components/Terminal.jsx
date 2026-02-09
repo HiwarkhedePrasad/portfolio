@@ -33,6 +33,7 @@ const Terminal = ({ isExpanded, onToggleExpand }) => {
       { type: 'normal', text: '  [1] Chat-Secure — Zero-trace messaging' },
       { type: 'normal', text: '  [2] ByteWise — Struct memory optimizer' },
       { type: 'normal', text: '  [3] RAG Agent — Self-correcting AI' },
+      { type: 'normal', text: '  [4] Heimdall — Hybrid DDoS Defense' },
     ],
     skills: [
       { type: 'success', text: 'Stack:' },
