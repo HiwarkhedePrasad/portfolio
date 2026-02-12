@@ -137,7 +137,7 @@ const Terminal = ({ isExpanded, onToggleExpand }) => {
 
     let response = [];
     
-    if (cmd === 'clear') {
+    if (cmd === 'clear' || cmd === 'cls') {
       setHistory([{ type: 'system', text: 'Terminal cleared.' }]);
       setInput('');
       return;

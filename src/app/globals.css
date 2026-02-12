@@ -273,13 +273,19 @@ h1, h2, h3 {
    PROJECT CARDS
    ============================================ */
 
+:root {
+  --accent: #f5f5f5; /* Bright white — monochrome accent */
+}
+
 .project-card {
-  padding: 1rem;
+  padding: 1.25rem;
   background: var(--gray-800);
   border: 1px solid var(--gray-700);
   border-radius: var(--radius);
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
 }
 
 .project-card:hover {
@@ -289,24 +295,54 @@ h1, h2, h3 {
 }
 
 .project-card h4 {
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin: 0 0 0.75rem 0;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
   color: var(--white);
+  letter-spacing: -0.01em;
 }
 
 .project-meta {
-  font-size: 0.7rem;
-  color: var(--gray-400);
+  font-size: 0.6rem;
+  color: var(--gray-500);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.15rem;
+  display: block;
 }
 
 .project-text {
   font-size: 0.8rem;
   color: var(--gray-300);
   line-height: 1.5;
+  margin: 0;
+}
+
+/* Impact line — bright white for the punchline */
+.project-impact {
+  font-size: 0.85rem;
+  color: var(--white);
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ---- Focal Project (first / hero card) ---- */
+.project-card--focal {
+  border-left: 2px solid var(--gray-300);
+  min-width: 340px !important;
+  background: linear-gradient(135deg, var(--gray-800) 0%, var(--gray-700) 100%);
+}
+
+.project-card--focal h4 {
+  font-size: 1.15rem;
+  color: var(--white);
+}
+
+.project-card--focal:hover {
+  border-color: var(--white);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.04);
 }
 
 /* ============================================

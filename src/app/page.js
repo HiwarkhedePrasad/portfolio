@@ -30,7 +30,7 @@ const IdentityBlock = () => {
         <a href="#work" className="btn btn-primary">
           View Work <ArrowUpRight size={14} />
         </a>
-        <a href="mailto:phiwarkhede05@gmail.com" className="btn">
+        <a href="mailto:&#112;&#104;&#105;&#119;&#97;&#114;&#107;&#104;&#101;&#100;&#101;&#48;&#53;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;" className="btn">
           Contact
         </a>
       </div>
@@ -43,6 +43,15 @@ const IdentityBlock = () => {
 // ============================================
 const WorkBlock = () => {
   const projects = [
+    {
+      title: 'Heimdall',
+      slug: 'heimdall',
+      problem: 'Origin servers are vulnerable to complex L4/L7 DDoS attacks',
+      approach: 'Hybrid defense using Deterministic Rules (L7) and Isolation Forest ML (L4)',
+      challenge: 'Distinguishing flash crowds from malicious traffic in real-time',
+      impact: 'Adaptive, self-healing shield against multi-vector attacks',
+      focal: true,
+    },
     {
       title: 'Chat-Secure',
       slug: 'chat-secure',
@@ -67,14 +76,6 @@ const WorkBlock = () => {
       challenge: 'Grading retrieval before generation',
       impact: '~40% reduction in hallucinations',
     },
-    {
-      title: 'Heimdall',
-      slug: 'heimdall',
-      problem: 'Origin servers are vulnerable to complex L4/L7 DDoS attacks',
-      approach: 'Hybrid defense using Deterministic Rules (L7) and Isolation Forest ML (L4)',
-      challenge: 'Distinguishing flash crowds from malicious traffic in real-time',
-      impact: 'Adaptive, self-healing shield against multi-vector attacks',
-    },
   ];
 
   return (
@@ -85,7 +86,11 @@ const WorkBlock = () => {
       
       <div className="flex overflow-x-auto gap-4 pb-4 -mx-2 px-2 snap-x">
         {projects.map((project, i) => (
-          <Link key={i} href={`/projects/${project.slug}`} className="project-card min-w-[300px] md:min-w-[350px] flex-shrink-0 snap-center block">
+          <Link 
+            key={i} 
+            href={`/projects/${project.slug}`} 
+            className={`project-card min-w-[300px] md:min-w-[350px] flex-shrink-0 snap-center block ${project.focal ? 'project-card--focal' : ''}`}
+          >
             <h4>{project.title}</h4>
             
             <div className="space-y-2">
@@ -103,7 +108,7 @@ const WorkBlock = () => {
               </div>
               <div>
                 <span className="project-meta">Impact</span>
-                <p className="project-text text-white">{project.impact}</p>
+                <p className="project-impact">{project.impact}</p>
               </div>
             </div>
           </Link>
@@ -215,7 +220,7 @@ const ContactBlock = () => {
       
       <div className="flex flex-wrap items-center gap-4">
         <a 
-          href="mailto:phiwarkhede05@gmail.com" 
+          href="mailto:&#112;&#104;&#105;&#119;&#97;&#114;&#107;&#104;&#101;&#100;&#101;&#48;&#53;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;"
           className="btn"
         >
           <Mail size={14} />
