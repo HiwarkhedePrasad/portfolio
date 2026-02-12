@@ -227,10 +227,10 @@ const GraphPage = () => {
                         key={i}
                         data-from={e.from}
                         data-to={e.to}
-                        x1={n1.x * dimensions.width}
-                        y1={n1.y * dimensions.height}
-                        x2={n2.x * dimensions.width}
-                        y2={n2.y * dimensions.height}
+                        x1={(n1.x * dimensions.width).toFixed(3)}
+                        y1={(n1.y * dimensions.height).toFixed(3)}
+                        x2={(n2.x * dimensions.width).toFixed(3)}
+                        y2={(n2.y * dimensions.height).toFixed(3)}
                         stroke="#334155"
                         strokeWidth="1"
                         opacity="0.3"
@@ -245,7 +245,7 @@ const GraphPage = () => {
                     key={n.id} 
                     data-node-id={n.id}
                     className="group cursor-pointer transition-all duration-300"
-                    transform={`translate(${n.x * dimensions.width}, ${n.y * dimensions.height})`}
+                    transform={`translate(${(n.x * dimensions.width).toFixed(3)}, ${(n.y * dimensions.height).toFixed(3)})`}
                 >
                     <circle 
                         r={n.size} 
