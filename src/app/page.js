@@ -45,6 +45,7 @@ const WorkBlock = () => {
   const projects = [
     {
       title: 'Chat-Secure',
+      slug: 'chat-secure',
       problem: 'Messaging apps leave traces on servers',
       approach: 'RAM-only architecture, Signal Protocol',
       challenge: 'Zero-persistence key management',
@@ -52,6 +53,7 @@ const WorkBlock = () => {
     },
     {
       title: 'ByteWise',
+      slug: 'bytewise',
       problem: 'C structs waste memory due to padding',
       approach: 'VS Code extension with AST parsing',
       challenge: 'Real-time analysis without compilation',
@@ -59,6 +61,7 @@ const WorkBlock = () => {
     },
     {
       title: 'Self-Correcting RAG',
+      slug: 'self-correcting-rag-agent',
       problem: 'LLMs hallucinate when retrieval fails',
       approach: 'LangGraph with feedback loops',
       challenge: 'Grading retrieval before generation',
@@ -66,6 +69,7 @@ const WorkBlock = () => {
     },
     {
       title: 'Heimdall',
+      slug: 'heimdall',
       problem: 'Origin servers are vulnerable to complex L4/L7 DDoS attacks',
       approach: 'Hybrid defense using Deterministic Rules (L7) and Isolation Forest ML (L4)',
       challenge: 'Distinguishing flash crowds from malicious traffic in real-time',
@@ -81,7 +85,7 @@ const WorkBlock = () => {
       
       <div className="flex overflow-x-auto gap-4 pb-4 -mx-2 px-2 snap-x">
         {projects.map((project, i) => (
-          <div key={i} className="project-card min-w-[300px] md:min-w-[350px] flex-shrink-0 snap-center">
+          <Link key={i} href={`/projects/${project.slug}`} className="project-card min-w-[300px] md:min-w-[350px] flex-shrink-0 snap-center block">
             <h4>{project.title}</h4>
             
             <div className="space-y-2">
@@ -102,7 +106,7 @@ const WorkBlock = () => {
                 <p className="project-text text-white">{project.impact}</p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

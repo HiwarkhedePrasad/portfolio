@@ -1,11 +1,13 @@
 'use client';
 import React from 'react';
+import Link from 'next/link';
 import { Github, ExternalLink, Folder } from 'lucide-react';
 
 const Projects = () => {
   const projects = [
     {
       title: "Chat-Secure",
+      slug: "chat-secure",
       description: "A \"Zero-Trace\" messaging app where data never touches a hard drive. Runs entirely in volatile memory (RAM) with a \"Panic Button\" that instantly wipes encryption keys.",
       tags: ["Node.js", "Redis", "Signal Protocol", "E2EE"],
       gradient: "from-red-500/20 to-rose-500/20",
@@ -15,6 +17,7 @@ const Projects = () => {
     },
     {
       title: "ByteWise",
+      slug: "bytewise",
       description: "VS Code extension that visualizes invisible \"wasted bytes\" in C/C++ structs due to padding and alignment. Features a visual heatmap and one-click struct reordering.",
       tags: ["VS Code API", "TypeScript", "C/C++", "AST"],
       gradient: "from-cyan-500/20 to-blue-500/20",
@@ -24,6 +27,7 @@ const Projects = () => {
     },
     {
       title: "Self-Correcting RAG Agent",
+      slug: "self-correcting-rag-agent",
       description: "A LangGraph-powered PDF chatbot that fact-checks itself. Uses a corrective pattern to grade retrieved chunks and rewrite queries if data is irrelevant.",
       tags: ["LangGraph", "Python", "RAG", "LLM"],
       gradient: "from-violet-500/20 to-purple-500/20",
@@ -61,9 +65,10 @@ const Projects = () => {
         {/* Projects Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <div 
-              key={index} 
-              className="group glass-card overflow-hidden"
+            <Link
+              key={index}
+              href={`/projects/${project.slug}`}
+              className="group glass-card overflow-hidden block"
               style={{ 
                 transform: 'perspective(1000px)',
               }}
@@ -102,23 +107,23 @@ const Projects = () => {
                 
                 {/* Links */}
                 <div className="flex items-center gap-4 pt-4 border-t border-white/5">
-                  <a 
-                    href={project.github} 
+                  <span 
                     className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-white transition-colors group/link"
+                    onClick={(e) => { e.preventDefault(); window.open(project.github, '_blank'); }}
                   >
                     <Github size={18} />
                     <span className="animated-underline">Code</span>
-                  </a>
-                  <a 
-                    href={project.live} 
+                  </span>
+                  <span 
                     className={`flex items-center gap-2 text-sm font-medium ${project.accentColor} hover:brightness-125 transition-all group/link`}
+                    onClick={(e) => { e.preventDefault(); window.open(project.live, '_blank'); }}
                   >
                     <ExternalLink size={18} />
                     <span className="animated-underline">Live Demo</span>
-                  </a>
+                  </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -127,3 +132,4 @@ const Projects = () => {
 };
 
 export default Projects;
+

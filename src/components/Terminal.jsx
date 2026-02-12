@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Maximize2, Minimize2 } from 'lucide-react';
 
 const Terminal = ({ isExpanded, onToggleExpand }) => {
@@ -9,8 +9,11 @@ const Terminal = ({ isExpanded, onToggleExpand }) => {
   ]);
   const [input, setInput] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [demoActive, setDemoActive] = useState(true);
+  const [demoTyping, setDemoTyping] = useState('');
   const inputRef = useRef(null);
   const bodyRef = useRef(null);
+  const demoRef = useRef(true); // mutable ref for checking demo state in async loops
 
   const commands = {
     help: [
@@ -49,11 +52,82 @@ const Terminal = ({ isExpanded, onToggleExpand }) => {
     ],
   };
 
+  // Demo sequence: commands to auto-run
+  const demoSequence = ['about', 'skills', 'projects'];
+
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+  const stopDemo = useCallback(() => {
+    if (demoRef.current) {
+      demoRef.current = false;
+      setDemoActive(false);
+      setDemoTyping('');
+    }
+  }, []);
+
+  // Demo mode: auto-type and run commands
+  useEffect(() => {
+    let cancelled = false;
+
+    const runDemo = async () => {
+      // Initial pause before starting demo
+      await sleep(1500);
+
+      while (demoRef.current && !cancelled) {
+        for (const cmd of demoSequence) {
+          if (!demoRef.current || cancelled) return;
+
+          // Type the command character by character
+          for (let i = 0; i <= cmd.length; i++) {
+            if (!demoRef.current || cancelled) return;
+            setDemoTyping(cmd.slice(0, i));
+            await sleep(80 + Math.random() * 60);
+          }
+
+          if (!demoRef.current || cancelled) return;
+
+          // Small pause before "pressing enter"
+          await sleep(400);
+
+          // Execute the command
+          const response = commands[cmd] || [];
+          setHistory(prev => [
+            ...prev,
+            { type: 'command', text: `> ${cmd}` },
+            ...response,
+          ]);
+          setDemoTyping('');
+
+          if (!demoRef.current || cancelled) return;
+
+          // Pause between commands
+          await sleep(2000);
+        }
+
+        // Clear and restart loop
+        if (demoRef.current && !cancelled) {
+          await sleep(1500);
+          setHistory([
+            { type: 'system', text: 'PRASAD_SYS Terminal v1.0' },
+            { type: 'system', text: 'Type "help" for available commands.' },
+          ]);
+          await sleep(1000);
+        }
+      }
+    };
+
+    runDemo();
+
+    return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Auto-scroll
   useEffect(() => {
     if (bodyRef.current) {
       bodyRef.current.scrollTop = bodyRef.current.scrollHeight;
     }
-  }, [history]);
+  }, [history, demoTyping]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -84,16 +158,25 @@ const Terminal = ({ isExpanded, onToggleExpand }) => {
     setInput('');
   };
 
+  const handleTerminalClick = () => {
+    if (demoActive) {
+      stopDemo();
+    }
+    inputRef.current?.focus();
+  };
+
   return (
     <div 
       className={`terminal flex flex-col ${isExpanded ? 'h-full' : 'h-full'}`}
-      onClick={() => inputRef.current?.focus()}
+      onClick={handleTerminalClick}
     >
       <div className="terminal-header flex items-center">
         <span className="terminal-dot" />
         <span className="terminal-dot" />
         <span className="terminal-dot" />
-        <span className="text-xs text-gray-500 ml-2 flex-1">terminal</span>
+        <span className="text-xs text-gray-500 ml-2 flex-1">
+          terminal {demoActive && <span className="text-green-500 ml-1 animate-pulse">● demo</span>}
+        </span>
         
         {/* Expand/Collapse Button */}
         <button
@@ -120,6 +203,15 @@ const Terminal = ({ isExpanded, onToggleExpand }) => {
             {line.text}
           </div>
         ))}
+
+        {/* Demo typing indicator - shows current command being typed */}
+        {demoActive && demoTyping !== '' && (
+          <div className="terminal-line command" style={{ opacity: 0.8 }}>
+            <span className="terminal-prompt">{'>'}</span>{' '}
+            <span>{demoTyping}</span>
+            <span className="terminal-cursor inline-block ml-0.5 animate-pulse">▌</span>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="terminal-input">
@@ -129,10 +221,13 @@ const Terminal = ({ isExpanded, onToggleExpand }) => {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onFocus={() => setIsFocused(true)}
+          onFocus={() => {
+            setIsFocused(true);
+            if (demoActive) stopDemo();
+          }}
           onBlur={() => setIsFocused(false)}
           className="flex-1 bg-transparent border-none outline-none text-gray-200 font-mono text-xs"
-          placeholder={isFocused ? '' : 'type command...'}
+          placeholder={demoActive ? 'click to take control...' : (isFocused ? '' : 'type command...')}
           spellCheck={false}
           autoComplete="off"
         />
