@@ -84,14 +84,65 @@ const GraphPage = () => {
         });
     });
 
-    // Add some cross-connections for density 
+    // --- Within-category cross-connections ---
     edgeList.push({ from: 'react', to: 'nextjs' });
     edgeList.push({ from: 'typescript', to: 'react' });
-    edgeList.push({ from: 'node', to: 'express' });
     edgeList.push({ from: 'pytorch', to: 'tensorflow' });
     edgeList.push({ from: 'rag', to: 'langchain' });
     edgeList.push({ from: 'docker', to: 'k8s' });
     edgeList.push({ from: 'sql', to: 'postgresql' });
+    edgeList.push({ from: 'redux', to: 'react' });
+    edgeList.push({ from: 'html5', to: 'css3' });
+    edgeList.push({ from: 'llms', to: 'langchain' });
+    edgeList.push({ from: 'rag', to: 'vectordb' });
+    edgeList.push({ from: 'nodejs', to: 'express' });
+
+    // --- Domain-to-Domain cross-connections (hidden by default) ---
+    edgeList.push({ from: 'frontend', to: 'backend', cross: true });
+    edgeList.push({ from: 'backend', to: 'systems', cross: true });
+    edgeList.push({ from: 'backend', to: 'ai', cross: true });
+    edgeList.push({ from: 'devops', to: 'backend', cross: true });
+    edgeList.push({ from: 'devops', to: 'systems', cross: true });
+    edgeList.push({ from: 'ai', to: 'systems', cross: true });
+
+    // --- Cross-domain skill connections (hidden by default) ---
+    // Frontend ↔ Backend
+    edgeList.push({ from: 'react', to: 'nodejs', cross: true });
+    edgeList.push({ from: 'nextjs', to: 'nodejs', cross: true });
+    edgeList.push({ from: 'typescript', to: 'nodejs', cross: true });
+    edgeList.push({ from: 'graphql', to: 'react', cross: true });
+    edgeList.push({ from: 'websockets', to: 'react', cross: true });
+
+    // Backend ↔ Systems
+    edgeList.push({ from: 'nodejs', to: 'mongodb', cross: true });
+    edgeList.push({ from: 'django', to: 'postgresql', cross: true });
+    edgeList.push({ from: 'express', to: 'redis', cross: true });
+    edgeList.push({ from: 'fastapi', to: 'postgresql', cross: true });
+    edgeList.push({ from: 'java', to: 'sql', cross: true });
+
+    // Backend ↔ AI
+    edgeList.push({ from: 'python', to: 'pytorch', cross: true });
+    edgeList.push({ from: 'python', to: 'tensorflow', cross: true });
+    edgeList.push({ from: 'python', to: 'langchain', cross: true });
+    edgeList.push({ from: 'fastapi', to: 'llms', cross: true });
+
+    // DevOps ↔ Backend & Systems
+    edgeList.push({ from: 'docker', to: 'nodejs', cross: true });
+    edgeList.push({ from: 'docker', to: 'python', cross: true });
+    edgeList.push({ from: 'nginx', to: 'nodejs', cross: true });
+    edgeList.push({ from: 'aws', to: 'postgresql', cross: true });
+    edgeList.push({ from: 'cicd', to: 'git', cross: true });
+    edgeList.push({ from: 'k8s', to: 'aws', cross: true });
+
+    // AI ↔ Systems
+    edgeList.push({ from: 'vectordb', to: 'postgresql', cross: true });
+    edgeList.push({ from: 'opencv', to: 'c', cross: true });
+
+    // Frontend ↔ AI
+    edgeList.push({ from: 'nextjs', to: 'llms', cross: true });
+
+    // Frontend ↔ DevOps
+    edgeList.push({ from: 'nextjs', to: 'docker', cross: true });
 
     return { nodes: nodeList, edges: edgeList };
   };
@@ -140,10 +191,12 @@ const GraphPage = () => {
       const nodeId = e.currentTarget.dataset.nodeId;
       if (!nodeId) return;
       
-      // Dim all
+      // Hide all lines, dim all nodes
       svg.style.opacity = '1';
       svg.querySelectorAll('g').forEach(g => g.style.opacity = '0.2');
-      svg.querySelectorAll('line').forEach(l => l.style.opacity = '0.1');
+      svg.querySelectorAll('line').forEach(l => {
+        l.style.opacity = '0';
+      });
 
       // Highlight Self
       e.currentTarget.style.opacity = '1';
@@ -173,8 +226,9 @@ const GraphPage = () => {
            g.querySelector('circle').setAttribute('stroke', 'none');
        });
        svg.querySelectorAll('line').forEach(l => {
-           l.style.opacity = '0.3';
-           l.setAttribute('stroke', '#334155');
+           const isCross = l.dataset.cross === 'true';
+           l.style.opacity = isCross ? '0' : '0.3';
+           l.setAttribute('stroke', isCross ? '#60a5fa' : '#334155');
        });
     };
 
@@ -227,13 +281,14 @@ const GraphPage = () => {
                         key={i}
                         data-from={e.from}
                         data-to={e.to}
+                        data-cross={e.cross ? 'true' : undefined}
                         x1={(n1.x * dimensions.width).toFixed(3)}
                         y1={(n1.y * dimensions.height).toFixed(3)}
                         x2={(n2.x * dimensions.width).toFixed(3)}
                         y2={(n2.y * dimensions.height).toFixed(3)}
-                        stroke="#334155"
+                        stroke={e.cross ? '#60a5fa' : '#334155'}
                         strokeWidth="1"
-                        opacity="0.3"
+                        opacity={e.cross ? '0' : '0.3'}
                         className="transition-all duration-300"
                     />
                 );
