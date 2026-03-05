@@ -6,7 +6,7 @@
    ============================================ */
 
 :root {
-  /* Strictly Monochrome Palette */
+  /* Monochrome Palette */
   --black: #0a0a0a;
   --gray-900: #141414;
   --gray-800: #1f1f1f;
@@ -18,6 +18,11 @@
   --gray-200: #c0c0c0;
   --gray-100: #e0e0e0;
   --white: #f5f5f5;
+  
+  /* Brand Accent — Subtle Cyan */
+  --accent: #22d3ee;
+  --accent-dim: rgba(34, 211, 238, 0.15);
+  --accent-glow: rgba(34, 211, 238, 0.08);
   
   /* Spacing */
   --gap: 0.75rem;
@@ -44,7 +49,7 @@ body {
 }
 
 ::selection {
-  background: var(--white);
+  background: var(--accent);
   color: var(--black);
 }
 
@@ -86,13 +91,13 @@ h1, h2, h3 {
   margin: 0 auto;
   
   grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto auto auto auto;
   grid-template-areas:
-    "id id id id  work work work work work work work work"
-    "id id id id  work work work work work work work work"
-    "id id id id  work work work work work work work work"
-    "cap cap cap cap cap cap  term term term term term term"
-    "cap cap cap cap cap cap  term term term term term term"
-    "notes notes notes notes notes notes  contact contact contact contact contact contact";
+    "id id id id    work work work work work work work work"
+    "id id id id    work work work work work work work work"
+    "about about about about  cap cap cap cap  term term term term"
+    "about about about about  cap cap cap cap  term term term term"
+    "notes notes notes notes notes  contact contact contact contact contact contact contact";
 }
 
 @media (max-width: 1024px) {
@@ -101,10 +106,10 @@ h1, h2, h3 {
     grid-template-areas:
       "id id id id id id"
       "work work work work work work"
-      "work work work work work work"
+      "about about about about about about"
       "cap cap cap term term term"
-      "notes notes notes notes notes notes"
-      "contact contact contact contact contact contact";
+      "cap cap cap term term term"
+      "notes notes notes contact contact contact";
   }
 }
 
@@ -114,6 +119,7 @@ h1, h2, h3 {
     grid-template-areas:
       "id"
       "work"
+      "about"
       "cap"
       "term"
       "notes"
@@ -273,9 +279,7 @@ h1, h2, h3 {
    PROJECT CARDS
    ============================================ */
 
-:root {
-  --accent: #f5f5f5; /* Bright white — monochrome accent */
-}
+/* accent already defined in :root above */
 
 .project-card {
   padding: 1.25rem;
@@ -330,7 +334,7 @@ h1, h2, h3 {
 
 /* ---- Focal Project (first / hero card) ---- */
 .project-card--focal {
-  border-left: 2px solid var(--gray-300);
+  border-left: 2px solid var(--accent);
   min-width: 340px !important;
   background: linear-gradient(135deg, var(--gray-800) 0%, var(--gray-700) 100%);
 }
@@ -341,8 +345,8 @@ h1, h2, h3 {
 }
 
 .project-card--focal:hover {
-  border-color: var(--white);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.04);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
 }
 
 /* ============================================
@@ -535,4 +539,180 @@ h1, h2, h3 {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--gray-500);
+}
+
+/* ============================================
+   ABOUT BLOCK
+   ============================================ */
+
+.block-about {
+  grid-area: about;
+}
+
+.about-stat {
+  text-align: center;
+  padding: 0.75rem;
+  background: var(--gray-800);
+  border: 1px solid var(--gray-700);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease;
+}
+
+.about-stat:hover {
+  border-color: var(--accent);
+}
+
+.about-stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.about-stat-label {
+  font-size: 0.65rem;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.15rem;
+}
+
+/* ============================================
+   COMMAND PALETTE (Cmd+K)
+   ============================================ */
+
+.cmd-palette-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 20vh;
+}
+
+.cmd-palette {
+  width: 90%;
+  max-width: 520px;
+  background: var(--gray-900);
+  border: 1px solid var(--gray-600);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+}
+
+.cmd-palette-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--gray-700);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.cmd-palette-input::placeholder {
+  color: var(--gray-500);
+}
+
+.cmd-palette-results {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.cmd-palette-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  cursor: pointer;
+  transition: background 0.1s ease;
+  color: var(--gray-300);
+  font-size: 0.8rem;
+}
+
+.cmd-palette-item:hover,
+.cmd-palette-item.active {
+  background: var(--gray-800);
+  color: var(--white);
+}
+
+.cmd-palette-item .shortcut {
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: var(--gray-500);
+  background: var(--gray-800);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  border: 1px solid var(--gray-700);
+}
+
+/* ============================================
+   MOBILE TERMINAL OPTIMIZATION
+   ============================================ */
+
+@media (max-width: 640px) {
+  .terminal-body {
+    max-height: 140px;
+  }
+
+  .terminal-mobile-hint {
+    display: block;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    font-size: 0.65rem;
+    color: var(--gray-500);
+    border-top: 1px solid var(--gray-700);
+  }
+}
+
+@media (min-width: 641px) {
+  .terminal-mobile-hint {
+    display: none;
+  }
+}
+
+/* ============================================
+   LINK BADGE (Private / NDA labels)
+   ============================================ */
+
+.link-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.6rem;
+  color: var(--gray-500);
+  border: 1px solid var(--gray-700);
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ============================================
+   404 PAGE
+   ============================================ */
+
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+.not-found-code {
+  font-size: 6rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  font-family: 'Inter', -apple-system, sans-serif;
+  letter-spacing: -0.04em;
+  opacity: 0.8;
 }
