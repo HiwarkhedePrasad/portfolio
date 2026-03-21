@@ -6,13 +6,13 @@ import { Github, ExternalLink, Folder } from 'lucide-react';
 const Projects = () => {
   const projects = [
     {
-      title: "Chat-Secure",
-      slug: "chat-secure",
-      description: "A \"Zero-Trace\" messaging app where data never touches a hard drive. Runs entirely in volatile memory (RAM) with a \"Panic Button\" that instantly wipes encryption keys.",
-      tags: ["Node.js", "Redis", "Signal Protocol", "E2EE"],
-      gradient: "from-red-500/20 to-rose-500/20",
-      accentColor: "text-red-400",
-      github: "#",
+      title: "DecentChat",
+      slug: "decentchat",
+      description: "A privacy-first, terminal-based peer-to-peer messenger with end-to-end encryption. DecentChat enables secure, direct communication without relying on a central server for message storage or relay.",
+      tags: ["Go", "BubbleTea", "P2P", "E2EE", "Supabase"],
+      gradient: "from-blue-500/20 to-indigo-500/20",
+      accentColor: "text-blue-400",
+      github: "https://github.com/HiwarkhedePrasad/DecentChat",
       live: "#"
     },
     {
