@@ -72,7 +72,7 @@ const WorkBlock = () => {
           <Link 
             key={i} 
             href={`/projects/${project.slug}`} 
-            className={`project-card min-w-[300px] md:min-w-[350px] flex-shrink-0 snap-center block ${project.focal ? 'project-card--focal' : ''}`}
+            className="project-card w-[400px] md:w-[350px] aspect-square flex-shrink-0 snap-center flex flex-col justify-between overflow-hidden"
           >
             <div className="flex items-center justify-between mb-3">
               <h4>{project.title}</h4>
@@ -301,7 +301,7 @@ const CommandPalette = ({ isOpen, onClose }) => {
   const actions = [
     { label: 'Go to Projects', icon: FolderOpen, action: () => { document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' }); onClose(); } },
     { label: 'View Heimdall', icon: FolderOpen, action: () => { window.location.href = '/projects/heimdall'; } },
-    { label: 'View Chat-Secure', icon: FolderOpen, action: () => { window.location.href = '/projects/chat-secure'; } },
+    { label: 'View DecentChat', icon: FolderOpen, action: () => { window.location.href = '/projects/decentchat'; } },
     { label: 'View ByteWise', icon: FolderOpen, action: () => { window.location.href = '/projects/bytewise'; } },
     { label: 'View RAG Agent', icon: FolderOpen, action: () => { window.location.href = '/projects/self-correcting-rag-agent'; } },
     { label: 'Copy Email', icon: Copy, action: () => { navigator.clipboard.writeText('phiwarkhede05@gmail.com'); onClose(); } },
